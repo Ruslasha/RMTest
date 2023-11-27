@@ -11,7 +11,34 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        // Создайте UIImageView и установите желаемое изображение
+        let imageView = UIImageView(image: UIImage(named: "LoadingComponent"))
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        view.addSubview(imageView)
+        
+        let logoView = UIImageView(image: UIImage(named: "logo"))
+        logoView.translatesAutoresizingMaskIntoConstraints = false
+        logoView.contentMode = .scaleAspectFit
+        view.addSubview(logoView)
+
+        NSLayoutConstraint.activate([
+            
+            imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50),
+            imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -50),
+            
+            logoView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -view.frame.height/4),
+            logoView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
+            logoView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
+        ])
+        
+        let rotationAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
+        rotationAnimation.toValue = NSNumber(value: Double.pi * 2)
+        rotationAnimation.duration = 2.0
+        rotationAnimation.repeatCount = .infinity
+        imageView.layer.add(rotationAnimation, forKey: "rotationAnimation")
+        
     }
 
 
