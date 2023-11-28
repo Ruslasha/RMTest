@@ -17,6 +17,8 @@
 		44488DB52B15DC68007B13BB /* Episode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44488DB42B15DC68007B13BB /* Episode.swift */; };
 		44488DB72B15DDDC007B13BB /* EpisodeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44488DB62B15DDDC007B13BB /* EpisodeCell.swift */; };
 		44488DB92B15E01C007B13BB /* NetworkServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44488DB82B15E01C007B13BB /* NetworkServices.swift */; };
+		44488DBC2B161803007B13BB /* CharacterDetailViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44488DBB2B161803007B13BB /* CharacterDetailViewController.storyboard */; };
+		44488DBE2B161812007B13BB /* CharacterDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44488DBD2B161812007B13BB /* CharacterDetailViewController.swift */; };
 		44D5F5A62B14F6A500E557EB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44D5F5A52B14F6A500E557EB /* AppDelegate.swift */; };
 		44D5F5A82B14F6A500E557EB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44D5F5A72B14F6A500E557EB /* SceneDelegate.swift */; };
 		44D5F5AA2B14F6A500E557EB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44D5F5A92B14F6A500E557EB /* ViewController.swift */; };
@@ -37,6 +39,8 @@
 		44488DB42B15DC68007B13BB /* Episode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Episode.swift; sourceTree = "<group>"; };
 		44488DB62B15DDDC007B13BB /* EpisodeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeCell.swift; sourceTree = "<group>"; };
 		44488DB82B15E01C007B13BB /* NetworkServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServices.swift; sourceTree = "<group>"; };
+		44488DBB2B161803007B13BB /* CharacterDetailViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = CharacterDetailViewController.storyboard; sourceTree = "<group>"; };
+		44488DBD2B161812007B13BB /* CharacterDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterDetailViewController.swift; sourceTree = "<group>"; };
 		44D5F5A22B14F6A500E557EB /* RMTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RMTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		44D5F5A52B14F6A500E557EB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		44D5F5A72B14F6A500E557EB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -86,6 +90,15 @@
 			path = Launch;
 			sourceTree = "<group>";
 		};
+		44488DBA2B1617C7007B13BB /* CharacterDetailViewController */ = {
+			isa = PBXGroup;
+			children = (
+				44488DBB2B161803007B13BB /* CharacterDetailViewController.storyboard */,
+				44488DBD2B161812007B13BB /* CharacterDetailViewController.swift */,
+			);
+			path = CharacterDetailViewController;
+			sourceTree = "<group>";
+		};
 		44D5F5992B14F6A500E557EB = {
 			isa = PBXGroup;
 			children = (
@@ -105,6 +118,7 @@
 		44D5F5A42B14F6A500E557EB /* RMTest */ = {
 			isa = PBXGroup;
 			children = (
+				44488DBA2B1617C7007B13BB /* CharacterDetailViewController */,
 				44488DB32B15D6FA007B13BB /* Launch */,
 				44488DAE2B15D696007B13BB /* Favourites */,
 				44488D992B15C497007B13BB /* Episodes */,
@@ -182,6 +196,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				44488DBC2B161803007B13BB /* CharacterDetailViewController.storyboard in Resources */,
 				44488DB22B15D6BC007B13BB /* FavouritesViewController.storyboard in Resources */,
 				44D5F5B52B14F6A700E557EB /* LaunchScreen.storyboard in Resources */,
 				44488DA12B15C4E7007B13BB /* EpisodesViewController.storyboard in Resources */,
@@ -205,6 +220,7 @@
 				44D5F5AA2B14F6A500E557EB /* ViewController.swift in Sources */,
 				44488DB92B15E01C007B13BB /* NetworkServices.swift in Sources */,
 				44D5F5A62B14F6A500E557EB /* AppDelegate.swift in Sources */,
+				44488DBE2B161812007B13BB /* CharacterDetailViewController.swift in Sources */,
 				44488DA52B15CAA6007B13BB /* CharacterCell.swift in Sources */,
 				44488DA32B15CA3E007B13BB /* Character.swift in Sources */,
 				44D5F5B02B14F6A500E557EB /* RMTest.xcdatamodeld in Sources */,

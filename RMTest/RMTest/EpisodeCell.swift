@@ -12,14 +12,23 @@ final class EpisodeCell: UICollectionViewCell {
     
     private let characterImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
-    private let nameLabel: UILabel = {
+//    private let nameLabel: UILabel = {
+//        let label = UILabel()
+//        label.font = UIFont.boldSystemFont(ofSize: 20)
+//        label.textColor = UIColor.black
+//        label.translatesAutoresizingMaskIntoConstraints = false
+//        return label
+//    }()
+    
+    private let nameCharacterLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.font = UIFont.boldSystemFont(ofSize: 22)
         label.textColor = UIColor.black
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -33,9 +42,17 @@ final class EpisodeCell: UICollectionViewCell {
         return label
     }()
     
-    private let episodeLabel: UILabel = {
+//    private let episodeLabel: UILabel = {
+//        let label = UILabel()
+//        label.font = UIFont.systemFont(ofSize: 14)
+//        label.textColor = UIColor.black
+//        label.translatesAutoresizingMaskIntoConstraints = false
+//        return label
+//    }()
+    
+    private let nameEpisodeLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14)
+        label.font = UIFont.systemFont(ofSize: 20)
         label.textColor = UIColor.black
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -69,11 +86,14 @@ final class EpisodeCell: UICollectionViewCell {
     }
     
     private func addSubview() {
-        contentView.addSubview(nameLabel)
+//        contentView.addSubview(nameLabel)
         contentView.addSubview(air_dateLabel)
-        contentView.addSubview(episodeLabel)
+        contentView.addSubview(nameEpisodeLabel)
+//        contentView.addSubview(episodeLabel)
         contentView.addSubview(randomCharacterLinkLabel)
         contentView.addSubview(characterImageView)
+        contentView.addSubview(nameCharacterLabel)
+        
     }
     
     private func setupConstraint() {
@@ -81,26 +101,21 @@ final class EpisodeCell: UICollectionViewCell {
             
             characterImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             characterImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-//            characterImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            characterImageView.heightAnchor.constraint(equalToConstant: 50),
-            characterImageView.widthAnchor.constraint(equalTo: characterImageView.heightAnchor),
-
-            nameLabel.topAnchor.constraint(equalTo: characterImageView.bottomAnchor, constant: 8),
-            nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            nameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            characterImageView.widthAnchor.constraint(equalToConstant: 400),
+            characterImageView.heightAnchor.constraint(equalToConstant: 300),
             
-            air_dateLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 4),
+            nameCharacterLabel.topAnchor.constraint(equalTo: characterImageView.bottomAnchor, constant: 8),
+            nameCharacterLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            nameCharacterLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+         
+            air_dateLabel.topAnchor.constraint(equalTo: nameCharacterLabel.bottomAnchor, constant: 4),
             air_dateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5),
             air_dateLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             
-            episodeLabel.topAnchor.constraint(equalTo: air_dateLabel.bottomAnchor, constant: 4),
-            episodeLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            episodeLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            
-            randomCharacterLinkLabel.topAnchor.constraint(equalTo: episodeLabel.bottomAnchor, constant: 4),
-            randomCharacterLinkLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            randomCharacterLinkLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            
+            nameEpisodeLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
+            nameEpisodeLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            nameEpisodeLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+        
         ])
         
     }
@@ -117,24 +132,21 @@ final class EpisodeCell: UICollectionViewCell {
     }
     
     func configure(with episode: Episode) {
-        nameLabel.text = episode.name
-        air_dateLabel.text = " \(episode.air_date)"
-        episodeLabel.text = "\(episode.episode)"
+        
+        nameEpisodeLabel.text = "\(episode.name)" + " | " + "\(episode.episode)"
         if let randomCharacter = getRandomElement(from: episode.characters) {
             
             let networkServices = NetworkServices()
-            randomCharacterLinkLabel.text = "\(randomCharacter)"
             
             networkServices.loadCharacterData(for: randomCharacter) { [weak self] result in
                 switch result {
                 case .success(let characterDetails):
                     DispatchQueue.main.async {
+                        self?.nameCharacterLabel.text = "\(characterDetails.name)"
                         if let url = URL(string: characterDetails.image) {
                             networkServices.loadImage(url: url, in: self!.characterImageView)
                         }
-
-                        
-                                      }
+                    }
                 case .failure(let error):
                     print("Error loading data: \(error.localizedDescription)")
                 }

@@ -23,17 +23,34 @@ class EpisodesViewController: UIViewController, UICollectionViewDelegateFlowLayo
         return cell
     }
     
+    private func showCharacterDetails() {
+
+        let detailViewController = CharacterDetailViewController()
+            let navController = UINavigationController(rootViewController: detailViewController)
+            
+            let backButton = UIBarButtonItem(title: "Назад", style: .plain, target: self, action: #selector(backButtonTapped))
+            detailViewController.navigationItem.leftBarButtonItem = backButton
+ 
+            navController.modalPresentationStyle = .fullScreen
+            present(navController, animated: false, completion: nil)
+
+    }
+    
+    @objc private func backButtonTapped() {
+        dismiss(animated: false, completion: nil)
+    }
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.bounds.width - 20
-        let height: CGFloat = 250
+        let height: CGFloat = 400
         
         return CGSize(width: width, height: height)
     }
     
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 //        let character = characters[indexPath.item]
-//        showCharacterDetails(character)
-//    }
+        showCharacterDetails()
+    }
 
 
     var collectionView: UICollectionView!
