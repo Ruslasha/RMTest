@@ -10,6 +10,13 @@ import UIKit
 
 final class EpisodeCell: UICollectionViewCell {
     
+    private let characterImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 16)
@@ -66,12 +73,19 @@ final class EpisodeCell: UICollectionViewCell {
         contentView.addSubview(air_dateLabel)
         contentView.addSubview(episodeLabel)
         contentView.addSubview(randomCharacterLinkLabel)
+        contentView.addSubview(characterImageView)
     }
     
     private func setupConstraint() {
         NSLayoutConstraint.activate([
+            
+            characterImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            characterImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+//            characterImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            characterImageView.heightAnchor.constraint(equalToConstant: 50),
+            characterImageView.widthAnchor.constraint(equalTo: characterImageView.heightAnchor),
 
-            nameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
+            nameLabel.topAnchor.constraint(equalTo: characterImageView.bottomAnchor, constant: 8),
             nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
             nameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             
@@ -104,34 +118,32 @@ final class EpisodeCell: UICollectionViewCell {
     
     func configure(with episode: Episode) {
         nameLabel.text = episode.name
-//        if character.status == "Alive" {
-//            circleView.backgroundColor = .green
-//        } else {
-//            circleView.backgroundColor = .red
-//        }
         air_dateLabel.text = " \(episode.air_date)"
         episodeLabel.text = "\(episode.episode)"
         if let randomCharacter = getRandomElement(from: episode.characters) {
+            
+            let networkServices = NetworkServices()
             randomCharacterLinkLabel.text = "\(randomCharacter)"
+            
+            networkServices.loadCharacterData(for: randomCharacter) { [weak self] result in
+                switch result {
+                case .success(let characterDetails):
+                    DispatchQueue.main.async {
+                        if let url = URL(string: characterDetails.image) {
+                            networkServices.loadImage(url: url, in: self!.characterImageView)
+                        }
+
+                        
+                                      }
+                case .failure(let error):
+                    print("Error loading data: \(error.localizedDescription)")
+                }
+            }
         } else {
             randomCharacterLinkLabel.text = ""
         }
-        
-        
-//        if let url = URL(string: character.image) {
-//            DispatchQueue.global().async {
-//                do {
-//                    let data = try Data(contentsOf: url)
-//                    DispatchQueue.main.async {
-//                        self.characterImageView.image = UIImage(data: data)
-//                    }
-//                } catch {
-//                    print("Ошибка загрузки данных: \(error)")
-//                }
-//            }
-//        }
-
     }
+
     
     func getRandomElement<T>(from array: [T]) -> T? {
         guard !array.isEmpty else {

@@ -27,3 +27,4 @@ struct EpisodeResults: Decodable {
 //        case airDate = "air_date"
     }
 }
+
