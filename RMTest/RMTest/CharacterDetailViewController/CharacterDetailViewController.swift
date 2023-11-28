@@ -17,7 +17,7 @@ final class CharacterDetailViewController: UIViewController {
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 22)
-        label.textColor = UIColor.white
+        label.textColor = UIColor.black
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -33,7 +33,7 @@ final class CharacterDetailViewController: UIViewController {
     private let statusTitleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 12)
-        label.textColor = UIColor.gray
+        label.textColor = UIColor.black
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -41,7 +41,7 @@ final class CharacterDetailViewController: UIViewController {
     private let statusLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 16)
-        label.textColor = UIColor.white
+        label.textColor = UIColor.gray
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -49,7 +49,7 @@ final class CharacterDetailViewController: UIViewController {
     private let speciesGenderTitleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 12)
-        label.textColor = UIColor.gray
+        label.textColor = UIColor.black
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -57,7 +57,7 @@ final class CharacterDetailViewController: UIViewController {
     private let speciesGenderLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 16)
-        label.textColor = UIColor.white
+        label.textColor = UIColor.gray
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -65,7 +65,7 @@ final class CharacterDetailViewController: UIViewController {
     private let originLocationTitleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 12)
-        label.textColor = UIColor.gray
+        label.textColor = UIColor.black
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -73,7 +73,7 @@ final class CharacterDetailViewController: UIViewController {
     private let originLocationLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 16)
-        label.textColor = UIColor.white
+        label.textColor = UIColor.gray
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -82,6 +82,7 @@ final class CharacterDetailViewController: UIViewController {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 100
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -89,7 +90,7 @@ final class CharacterDetailViewController: UIViewController {
     private let episodesTitleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 16)
-        label.textColor = UIColor.gray
+        label.textColor = UIColor.black
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -97,7 +98,7 @@ final class CharacterDetailViewController: UIViewController {
     private let episodesLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 16)
-        label.textColor = UIColor.white
+        label.textColor = UIColor.gray
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -143,8 +144,8 @@ final class CharacterDetailViewController: UIViewController {
     }
     
     private func prepareView() {
-        let color = createColor(red: 34, green: 39, blue: 45)
-        view.backgroundColor = color
+//        let color = createColor(red: 34, green: 39, blue: 45)
+        view.backgroundColor = .white
         addSubview()
         setupConstraint()
     }
@@ -187,13 +188,15 @@ final class CharacterDetailViewController: UIViewController {
     private func setupConstraint() {
         NSLayoutConstraint.activate([
             characterImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
-            characterImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            characterImageView.widthAnchor.constraint(equalToConstant: 400),
+//            characterImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            characterImageView.widthAnchor.constraint(equalToConstant: 200),
             characterImageView.heightAnchor.constraint(equalToConstant: 200),
-            
+            characterImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+        
             nameLabel.topAnchor.constraint(equalTo: characterImageView.bottomAnchor, constant: 16),
-            nameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            nameLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            nameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+//            nameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+//            nameLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             
             statusTitleLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
             statusTitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
@@ -202,8 +205,6 @@ final class CharacterDetailViewController: UIViewController {
             circleView.topAnchor.constraint(equalTo: statusTitleLabel.bottomAnchor),
             circleView.widthAnchor.constraint(equalToConstant: 16),
             circleView.heightAnchor.constraint(equalToConstant: 16),
-            circleView.leadingAnchor.constraint(equalTo: view.leadingAnchor,  constant: 16),
-            
             
             statusLabel.topAnchor.constraint(equalTo: statusTitleLabel.bottomAnchor),
             statusLabel.leadingAnchor.constraint(equalTo: circleView.trailingAnchor, constant: 8),
