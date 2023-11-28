@@ -11,7 +11,7 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Создайте UIImageView и установите желаемое изображение
+        
         let imageView = UIImageView(image: UIImage(named: "LoadingComponent"))
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
@@ -21,7 +21,7 @@ class ViewController: UIViewController {
         logoView.translatesAutoresizingMaskIntoConstraints = false
         logoView.contentMode = .scaleAspectFit
         view.addSubview(logoView)
-
+        
         NSLayoutConstraint.activate([
             
             imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
@@ -38,6 +38,18 @@ class ViewController: UIViewController {
         rotationAnimation.duration = 2.0
         rotationAnimation.repeatCount = .infinity
         imageView.layer.add(rotationAnimation, forKey: "rotationAnimation")
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    let episodesViewController = EpisodesViewController()
+                    episodesViewController.modalPresentationStyle = .fullScreen
+
+                    self.present(episodesViewController, animated: false) {
+
+//                        self.dismiss(animated: true, completion: nil)
+                    }
+                }
+
+        
         
     }
 
