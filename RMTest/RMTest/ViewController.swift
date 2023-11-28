@@ -40,13 +40,34 @@ class ViewController: UIViewController {
         imageView.layer.add(rotationAnimation, forKey: "rotationAnimation")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                    let episodesViewController = EpisodesViewController()
-                    episodesViewController.modalPresentationStyle = .fullScreen
-
-                    self.present(episodesViewController, animated: false) {
-
-//                        self.dismiss(animated: true, completion: nil)
-                    }
+            
+            let tabBarViewController = UITabBarController()
+            
+            let episodesViewController = EpisodesViewController()
+            let favouritesViewController = FavouritesViewController()
+            
+            tabBarViewController.setViewControllers([episodesViewController, favouritesViewController], animated: false)
+            
+            guard let items = tabBarViewController.tabBar.items else {
+                return
+            }
+            
+            let images = ["house", "star"]
+            
+            items[0].image = UIImage(systemName: images[0])
+            items[1].image = UIImage(systemName: images[1])
+            
+            tabBarViewController.modalPresentationStyle = .fullScreen
+            
+            self.present(tabBarViewController, animated: false)
+            
+//                    let episodesViewController = EpisodesViewController()
+//                    episodesViewController.modalPresentationStyle = .fullScreen
+//
+//                    self.present(episodesViewController, animated: false) {
+//
+////                        self.dismiss(animated: true, completion: nil)
+//                    }
                 }
 
         

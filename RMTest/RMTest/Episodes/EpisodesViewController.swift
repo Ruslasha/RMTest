@@ -41,6 +41,7 @@ class EpisodesViewController: UIViewController, UICollectionViewDelegateFlowLayo
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        title = "Episodes"
         let color = createColor(red: 46, green: 46, blue: 46)
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
