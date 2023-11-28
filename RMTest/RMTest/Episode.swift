@@ -20,8 +20,10 @@ struct Episode: Decodable {
 
 struct EpisodeResults: Decodable {
     let episodes: [Episode]
+//   let airDate: String
     
     private enum CodingKeys: String, CodingKey {
         case episodes = "results"
+//        case airDate = "air_date"
     }
 }
