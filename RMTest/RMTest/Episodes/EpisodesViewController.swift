@@ -8,7 +8,7 @@
 import UIKit
 
 class EpisodesViewController: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
-    
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return episodes.count
     }
@@ -17,15 +17,22 @@ class EpisodesViewController: UIViewController, UICollectionViewDelegateFlowLayo
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EpisodeCell", for: indexPath) as! EpisodeCell
         
-        let episode = episodes[indexPath.item]
+        var episode = episodes[indexPath.item]
+        
+        if let randomCharacter = getRandomElement(from: episode.characters) {
+            
+            episode.characters = [randomCharacter]
+        } else {
+            episode.characters = []
+        }
         cell.configure(with: episode)
         
         return cell
     }
     
-    private func showCharacterDetails() {
+    private func showCharacterDetails(_ episode: Episode) {
 
-        let detailViewController = CharacterDetailViewController()
+        let detailViewController = CharacterDetailViewController(episode: episode)
             let navController = UINavigationController(rootViewController: detailViewController)
             
             let backButton = UIBarButtonItem(title: "Назад", style: .plain, target: self, action: #selector(backButtonTapped))
@@ -48,8 +55,9 @@ class EpisodesViewController: UIViewController, UICollectionViewDelegateFlowLayo
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        let character = characters[indexPath.item]
-        showCharacterDetails()
+        let episodes = episodes[indexPath.item]
+        showCharacterDetails(episodes)
+
     }
 
 
@@ -85,6 +93,15 @@ class EpisodesViewController: UIViewController, UICollectionViewDelegateFlowLayo
     
     private func createColor(red: CGFloat, green: CGFloat, blue: CGFloat) -> UIColor {
         return UIColor(red: red / 255.0, green: green / 255.0, blue: blue / 255.0, alpha: 1.0)
+    }
+    
+    func getRandomElement<T>(from array: [T]) -> T? {
+        guard !array.isEmpty else {
+            return nil
+        }
+        
+        let randomIndex = Int.random(in: 0..<array.count)
+        return array[randomIndex]
     }
     
 //    private func showCharacterDetails(_ character: Character) {

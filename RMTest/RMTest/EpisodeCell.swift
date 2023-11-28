@@ -86,10 +86,8 @@ final class EpisodeCell: UICollectionViewCell {
     }
     
     private func addSubview() {
-//        contentView.addSubview(nameLabel)
         contentView.addSubview(air_dateLabel)
         contentView.addSubview(nameEpisodeLabel)
-//        contentView.addSubview(episodeLabel)
         contentView.addSubview(randomCharacterLinkLabel)
         contentView.addSubview(characterImageView)
         contentView.addSubview(nameCharacterLabel)

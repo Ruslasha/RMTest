@@ -89,26 +89,6 @@ final class NetworkServices {
             }
         }.resume()
     }
-
-    
-//    func loadImage(from urlString: String, completion: @escaping (Result<UIImage?, Error>) -> Void) {
-//        guard let url = URL(string: urlString) else {
-//            completion(.failure(NetworkError.invalidURL))
-//            return
-//        }
-//        
-//        URLSession.shared.dataTask(with: url) { (data, response, error) in
-//            if let error = error {
-//                completion(.failure(error))
-//                return
-//            }
-//            
-//            if let data = data {
-//                let image = UIImage(data: data)
-//                completion(.success(image))
-//            }
-//        }.resume()
-//    }
     
     enum NetworkError: Error {
         case invalidURL
