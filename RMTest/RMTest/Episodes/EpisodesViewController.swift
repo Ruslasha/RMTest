@@ -10,17 +10,11 @@ import UIKit
 class EpisodesViewController: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return characters.count
         return episodes.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CharacterCell", for: indexPath) as! CharacterCell
-//
-//        let character = characters[indexPath.item]
-//        cell.configure(with: character)
-//
-//        return cell
+        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EpisodeCell", for: indexPath) as! EpisodeCell
         
         let episode = episodes[indexPath.item]
@@ -43,27 +37,19 @@ class EpisodesViewController: UIViewController, UICollectionViewDelegateFlowLayo
 
 
     var collectionView: UICollectionView!
-//    var characters: [Character] = []
     var episodes: [Episode] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         title = "Episodes"
-        let color = createColor(red: 46, green: 46, blue: 46)
+        let color = createColor(red: 220, green: 220, blue: 220)
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.minimumInteritemSpacing = 10
         layout.minimumLineSpacing = 10
         layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         layout.itemSize = CGSize(width: view.bounds.width - 20, height: 200) //
-        
-//        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: layout)
-//        collectionView.delegate = self
-//        collectionView.dataSource = self
-//        collectionView.register(CharacterCell.self, forCellWithReuseIdentifier: "CharacterCell")
-//        collectionView.backgroundColor = color
-//        view.addSubview(collectionView)
         
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: layout)
         collectionView.delegate = self
@@ -72,13 +58,6 @@ class EpisodesViewController: UIViewController, UICollectionViewDelegateFlowLayo
         collectionView.backgroundColor = color
         view.addSubview(collectionView)
         
-        
-//        APIManager.shared.getCharacters { characters in
-//            self.characters = characters
-//            DispatchQueue.main.async {
-//                self.collectionView.reloadData()
-//            }
-//        }
         NetworkServices.shared.getEpisodes { episodes in
                     self.episodes = episodes
                     DispatchQueue.main.async {

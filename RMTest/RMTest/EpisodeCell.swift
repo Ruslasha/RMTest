@@ -9,17 +9,11 @@ import Foundation
 import UIKit
 
 final class EpisodeCell: UICollectionViewCell {
-//    private let characterImageView: UIImageView = {
-//        let imageView = UIImageView()
-//        imageView.contentMode = .scaleAspectFit
-//        imageView.translatesAutoresizingMaskIntoConstraints = false
-//        return imageView
-//    }()
     
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 16)
-        label.textColor = UIColor.white
+        label.textColor = UIColor.black
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -27,7 +21,7 @@ final class EpisodeCell: UICollectionViewCell {
     private let air_dateLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14)
-        label.textColor = UIColor.white
+        label.textColor = UIColor.black
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -35,18 +29,18 @@ final class EpisodeCell: UICollectionViewCell {
     private let episodeLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14)
-        label.textColor = UIColor.white
+        label.textColor = UIColor.black
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-//    private let circleView: UIView = {
-//            let circleView = UIView()
-//            circleView.layer.cornerRadius = 8
-//            circleView.clipsToBounds = true
-//            circleView.translatesAutoresizingMaskIntoConstraints = false
-//            return circleView
-//    }()
+    private let randomCharacterLinkLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.textColor = UIColor.black
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -71,6 +65,7 @@ final class EpisodeCell: UICollectionViewCell {
         contentView.addSubview(nameLabel)
         contentView.addSubview(air_dateLabel)
         contentView.addSubview(episodeLabel)
+        contentView.addSubview(randomCharacterLinkLabel)
     }
     
     private func setupConstraint() {
@@ -88,12 +83,16 @@ final class EpisodeCell: UICollectionViewCell {
             episodeLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
             episodeLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             
+            randomCharacterLinkLabel.topAnchor.constraint(equalTo: episodeLabel.bottomAnchor, constant: 4),
+            randomCharacterLinkLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            randomCharacterLinkLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            
         ])
         
     }
     
     private func setupCellAppearance() {
-        let color = createColor(red: 66, green: 66, blue: 66)
+        let color = createColor(red: 255, green: 255, blue: 255)
         layer.backgroundColor = color.cgColor
         layer.cornerRadius = 15
         layer.masksToBounds = true
@@ -112,6 +111,12 @@ final class EpisodeCell: UICollectionViewCell {
 //        }
         air_dateLabel.text = " \(episode.air_date)"
         episodeLabel.text = "\(episode.episode)"
+        if let randomCharacter = getRandomElement(from: episode.characters) {
+            randomCharacterLinkLabel.text = "\(randomCharacter)"
+        } else {
+            randomCharacterLinkLabel.text = ""
+        }
+        
         
 //        if let url = URL(string: character.image) {
 //            DispatchQueue.global().async {
@@ -127,4 +132,14 @@ final class EpisodeCell: UICollectionViewCell {
 //        }
 
     }
+    
+    func getRandomElement<T>(from array: [T]) -> T? {
+        guard !array.isEmpty else {
+            return nil
+        }
+        
+        let randomIndex = Int.random(in: 0..<array.count)
+        return array[randomIndex]
+    }
+
 }
