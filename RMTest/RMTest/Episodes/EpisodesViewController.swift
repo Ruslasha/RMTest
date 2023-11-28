@@ -17,14 +17,7 @@ class EpisodesViewController: UIViewController, UICollectionViewDelegateFlowLayo
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EpisodeCell", for: indexPath) as! EpisodeCell
         
-        var episode = episodes[indexPath.item]
-        
-        if let randomCharacter = getRandomElement(from: episode.characters) {
-            
-            episode.characters = [randomCharacter]
-        } else {
-            episode.characters = []
-        }
+        let episode = episodes[indexPath.item]
         cell.configure(with: episode)
         
         return cell
@@ -95,20 +88,7 @@ class EpisodesViewController: UIViewController, UICollectionViewDelegateFlowLayo
         return UIColor(red: red / 255.0, green: green / 255.0, blue: blue / 255.0, alpha: 1.0)
     }
     
-    func getRandomElement<T>(from array: [T]) -> T? {
-        guard !array.isEmpty else {
-            return nil
-        }
-        
-        let randomIndex = Int.random(in: 0..<array.count)
-        return array[randomIndex]
-    }
     
-//    private func showCharacterDetails(_ character: Character) {
-//        let detailViewController = CharacterDetailViewController(character: character)
-//        
-//        present(detailViewController, animated: true, completion: nil)
-//    }
 }
 
 

@@ -19,7 +19,7 @@ struct Episode: Decodable {
 
 
 struct EpisodeResults: Decodable {
-    let episodes: [Episode]
+    var episodes: [Episode]
 //   let airDate: String
     
     private enum CodingKeys: String, CodingKey {
