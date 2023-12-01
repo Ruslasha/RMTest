@@ -18,13 +18,13 @@ final class EpisodeCell: UICollectionViewCell {
         return imageView
     }()
     
-//    private let nameLabel: UILabel = {
-//        let label = UILabel()
-//        label.font = UIFont.boldSystemFont(ofSize: 20)
-//        label.textColor = UIColor.black
-//        label.translatesAutoresizingMaskIntoConstraints = false
-//        return label
-//    }()
+    private let monitorImageView: UIImageView = {
+        let imageView = UIImageView()
+//        imageView.contentMode = .scaleAspectFill
+//        imageView.clipsToBounds = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
     
     private let nameCharacterLabel: UILabel = {
         let label = UILabel()
@@ -41,14 +41,6 @@ final class EpisodeCell: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
-//    private let episodeLabel: UILabel = {
-//        let label = UILabel()
-//        label.font = UIFont.systemFont(ofSize: 14)
-//        label.textColor = UIColor.black
-//        label.translatesAutoresizingMaskIntoConstraints = false
-//        return label
-//    }()
     
     private let nameEpisodeLabel: UILabel = {
         let label = UILabel()
@@ -86,8 +78,9 @@ final class EpisodeCell: UICollectionViewCell {
     }
     
     private func addSubview() {
-        contentView.addSubview(air_dateLabel)
+//        contentView.addSubview(air_dateLabel)
         contentView.addSubview(nameEpisodeLabel)
+        contentView.addSubview(monitorImageView)
         contentView.addSubview(randomCharacterLinkLabel)
         contentView.addSubview(characterImageView)
         contentView.addSubview(nameCharacterLabel)
@@ -106,12 +99,19 @@ final class EpisodeCell: UICollectionViewCell {
             nameCharacterLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
             nameCharacterLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
          
-            air_dateLabel.topAnchor.constraint(equalTo: nameCharacterLabel.bottomAnchor, constant: 4),
-            air_dateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5),
-            air_dateLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+//            air_dateLabel.topAnchor.constraint(equalTo: nameCharacterLabel.bottomAnchor, constant: 4),
+//            air_dateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5),
+//            air_dateLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            
+//            characterImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            
+            monitorImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
+            monitorImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            monitorImageView.widthAnchor.constraint(equalToConstant: 30),
+            monitorImageView.heightAnchor.constraint(equalToConstant: 30),
             
             nameEpisodeLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
-            nameEpisodeLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            nameEpisodeLabel.leadingAnchor.constraint(equalTo: monitorImageView.trailingAnchor, constant: 10),
             nameEpisodeLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
         
         ])
@@ -131,6 +131,7 @@ final class EpisodeCell: UICollectionViewCell {
     
     func configure(with episode: Episode) {
         
+        monitorImageView.image = UIImage(named: "MonitorPlay")
         nameEpisodeLabel.text = "\(episode.name)" + " | " + "\(episode.episode)"
         if let randomCharacter = getRandomElement(from: episode.characters) {
             

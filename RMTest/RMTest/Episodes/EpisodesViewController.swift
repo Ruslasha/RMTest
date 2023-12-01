@@ -10,14 +10,17 @@ import UIKit
 class EpisodesViewController: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return episodes.count
+//        return episodes.count
+        return filteredEpisodes.count
+
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EpisodeCell", for: indexPath) as! EpisodeCell
         
-        let episode = episodes[indexPath.item]
+//        let episode = episodes[indexPath.item]
+        let episode = filteredEpisodes[indexPath.row]
         cell.configure(with: episode)
         
         return cell
@@ -53,12 +56,45 @@ class EpisodesViewController: UIViewController, UICollectionViewDelegateFlowLayo
 
     }
 
-
+    let searchSeriesField: UITextField = {
+        let searchField = UITextField()
+        searchField.translatesAutoresizingMaskIntoConstraints = false
+        searchField.borderStyle = .roundedRect
+        searchField.placeholder = "Номер серии"
+        return searchField
+    }()
+            
     var collectionView: UICollectionView!
     var episodes: [Episode] = []
+    var filteredEpisodes: [Episode] = []
+    
+    func filterEpisodes(with searchText: String) {
+        if searchText.isEmpty {
+            filteredEpisodes = episodes
+        } else {
+            filteredEpisodes = episodes.filter { $0.episode.contains(searchText) }
+        }
+        collectionView.reloadData()
+    }
+    
+    @objc func searchFieldTextChanged(_ textField: UITextField) {
+        if let searchText = textField.text {
+            filterEpisodes(with: searchText)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        view.addSubview(searchSeriesField)
+        searchSeriesField.addTarget(self, action: #selector(searchFieldTextChanged(_:)), for: .editingChanged)
+
+        NSLayoutConstraint.activate([
+            searchSeriesField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            searchSeriesField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            searchSeriesField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            searchSeriesField.heightAnchor.constraint(equalToConstant: 50)
+                ])
         
         title = "Episodes"
         let color = createColor(red: 220, green: 220, blue: 220)
@@ -69,27 +105,65 @@ class EpisodesViewController: UIViewController, UICollectionViewDelegateFlowLayo
         layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         layout.itemSize = CGSize(width: view.bounds.width - 20, height: 200) //
         
-        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: layout)
+        view.backgroundColor = color
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(EpisodeCell.self, forCellWithReuseIdentifier: "EpisodeCell")
         collectionView.backgroundColor = color
         view.addSubview(collectionView)
         
+        NSLayoutConstraint.activate([
+            collectionView.topAnchor.constraint(equalTo: searchSeriesField.bottomAnchor, constant: 20),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+
+                ])
+        
+        
         NetworkServices.shared.getEpisodes { episodes in
                     self.episodes = episodes
                     DispatchQueue.main.async {
-                        self.collectionView.reloadData()
+//                        self.collectionView.reloadData()
+                        self.searchFieldTextChanged(self.searchSeriesField)
                     }
                 }
+        
     }
     
     private func createColor(red: CGFloat, green: CGFloat, blue: CGFloat) -> UIColor {
         return UIColor(red: red / 255.0, green: green / 255.0, blue: blue / 255.0, alpha: 1.0)
     }
     
+//    func updateSearchResults(for searchController: UISearchController) {
+//        filterEpisodesByNumber(searchController.searchBar.text)
+//    }
+//
+//    func filterEpisodesByNumber(_ searchText: String?) {
+//        guard let searchText = searchText, !searchText.isEmpty else {
+//               // Если текст поиска пустой, отобразить все серии
+//            self.collectionView.reloadData()
+//               return
+//           }
+//           
+//           let episodeNumber = Int(searchText) ?? 0
+////           let filteredEpisodes = episodes.filter { $0.number == episodeNumber }
+//        self.collectionView.reloadData()
+//
+//    }
+
+
     
 }
+//extension EpisodesViewController: UISearchResultsUpdating {
+//    func updateSearchResults(for searchController: UISearchController) {
+//        filterEpisodesByNumber(searchController.searchBar.text)
+//    }
+//}
+
+
 
 
        

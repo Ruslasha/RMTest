@@ -66,6 +66,7 @@
 		44488D992B15C497007B13BB /* Episodes */ = {
 			isa = PBXGroup;
 			children = (
+				44488DB62B15DDDC007B13BB /* EpisodeCell.swift */,
 				44488D9E2B15C4D8007B13BB /* EpisodesViewController.swift */,
 				44488DA02B15C4E7007B13BB /* EpisodesViewController.storyboard */,
 			);
@@ -130,7 +131,6 @@
 				44488DA22B15CA3E007B13BB /* Character.swift */,
 				44488DB42B15DC68007B13BB /* Episode.swift */,
 				44488DA42B15CAA6007B13BB /* CharacterCell.swift */,
-				44488DB62B15DDDC007B13BB /* EpisodeCell.swift */,
 				44488DA62B15CBC7007B13BB /* APIManager.swift */,
 				44488DB82B15E01C007B13BB /* NetworkServices.swift */,
 				44D5F5AE2B14F6A500E557EB /* RMTest.xcdatamodeld */,

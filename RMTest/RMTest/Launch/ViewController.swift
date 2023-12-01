@@ -39,7 +39,8 @@ class ViewController: UIViewController {
         rotationAnimation.repeatCount = .infinity
         imageView.layer.add(rotationAnimation, forKey: "rotationAnimation")
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             
             let tabBarViewController = UITabBarController()
             
@@ -61,13 +62,6 @@ class ViewController: UIViewController {
             
             self.present(tabBarViewController, animated: false)
             
-//                    let episodesViewController = EpisodesViewController()
-//                    episodesViewController.modalPresentationStyle = .fullScreen
-//
-//                    self.present(episodesViewController, animated: false) {
-//
-////                        self.dismiss(animated: true, completion: nil)
-//                    }
                 }
 
         
