@@ -8,8 +8,64 @@
 import Foundation
 import UIKit
 
-final class CharacterDetailViewController: UIViewController {
+final class CharacterDetailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate  {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 6
+    }
     
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // Создание и настройка ячейки таблицы
+        let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
+        cell.contentView.layoutMargins = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+
+        let labelWidth = cell.contentView.frame.width
+        let labelHeight = cell.contentView.frame.height / 2
+        
+        let labels = [
+            "Gender",
+            "Label 2",
+            "Status",
+            "Label 4",
+            "Specie",
+            "Label 6",
+            "Origin",
+            "Label 8",
+            "Type",
+            "Label 10",
+            "Location",
+            "Label 12"
+        ]
+        
+        
+        //        for i in 0..<2 {
+        let labelTop = UILabel(frame: CGRect(x: 0, y: CGFloat(0) * labelHeight, width: labelWidth, height: labelHeight))
+        labelTop.font = UIFont.boldSystemFont(ofSize: 16)
+        labelTop.text = labels[indexPath.row * 2]
+        cell.contentView.addSubview(labelTop)
+        
+        let labelBottom = UILabel(frame: CGRect(x: 0, y: CGFloat(1) * labelHeight, width: labelWidth, height: labelHeight))
+        labelBottom.font = UIFont.systemFont(ofSize: 14)
+        labelBottom.text = labels[indexPath.row * 2 + 1]
+        cell.contentView.addSubview(labelBottom)
+        //        }
+        
+        
+        return cell
+        
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+           // Обработка выбора ячейки таблицы
+           print("Выбрана ячейка \(indexPath.row + 1)")
+       }
+    
+//    var tableView: UITableView!
+
+    private var tableView: UITableView = {
+        var table = UITableView()
+//        table.translatesAutoresizingMaskIntoConstraints = false
+        return table
+    }()
     private let episode: Episode
     
 //    private let character: Character
@@ -19,6 +75,15 @@ final class CharacterDetailViewController: UIViewController {
         label.font = UIFont.boldSystemFont(ofSize: 22)
         label.textColor = UIColor.black
         label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private let infoLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 20)
+        label.textColor = UIColor.black
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Informations"
         return label
     }()
     
@@ -140,6 +205,7 @@ final class CharacterDetailViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         prepareView()
+
         loadData()
     }
     
@@ -147,6 +213,14 @@ final class CharacterDetailViewController: UIViewController {
 //        let color = createColor(red: 34, green: 39, blue: 45)
         view.backgroundColor = .white
         addSubview()
+        tableView = UITableView(frame: view.bounds, style: .plain)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        // Настройка делегата и источника данных для таблицы
+        tableView.delegate = self
+        tableView.dataSource = self
+        
+        // Добавление UITableView в иерархию представлений
+        view.addSubview(tableView)
         setupConstraint()
     }
     
@@ -156,19 +230,21 @@ final class CharacterDetailViewController: UIViewController {
     
     private func addSubview() {
         view.addSubview(characterImageView)
-        view.addSubview(nameLabel)
-        view.addSubview(idLabel)
-        view.addSubview(statusTitleLabel)
-        view.addSubview(statusLabel)
-        view.addSubview(speciesGenderTitleLabel)
-        view.addSubview(speciesGenderLabel)
-        view.addSubview(originLocationTitleLabel)
-        view.addSubview(originLocationLabel)
-        view.addSubview(episodesTitleLabel)
-        view.addSubview(episodesLabel)
-        view.addSubview(linkSkrollView)
-        view.addSubview(linkContentView)
-        view.addSubview(circleView)
+        view.addSubview(tableView)
+       view.addSubview(nameLabel)
+        view.addSubview(infoLabel)
+//        view.addSubview(idLabel)
+//        view.addSubview(statusTitleLabel)
+//        view.addSubview(statusLabel)
+//        view.addSubview(speciesGenderTitleLabel)
+//        view.addSubview(speciesGenderLabel)
+//        view.addSubview(originLocationTitleLabel)
+//        view.addSubview(originLocationLabel)
+//        view.addSubview(episodesTitleLabel)
+//        view.addSubview(episodesLabel)
+//        view.addSubview(linkSkrollView)
+//        view.addSubview(linkContentView)
+//        view.addSubview(circleView)
     }
     
     private func loadData() {
@@ -187,62 +263,77 @@ final class CharacterDetailViewController: UIViewController {
     
     private func setupConstraint() {
         NSLayoutConstraint.activate([
+            
+            
+            
             characterImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
-//            characterImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            //            characterImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             characterImageView.widthAnchor.constraint(equalToConstant: 200),
             characterImageView.heightAnchor.constraint(equalToConstant: 200),
             characterImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-        
+            
+            
+            
             nameLabel.topAnchor.constraint(equalTo: characterImageView.bottomAnchor, constant: 16),
             nameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-//            nameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-//            nameLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             
-            statusTitleLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
-            statusTitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            statusTitleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            tableView.topAnchor.constraint(equalTo: infoLabel.bottomAnchor, constant: 20),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
-            circleView.topAnchor.constraint(equalTo: statusTitleLabel.bottomAnchor),
-            circleView.widthAnchor.constraint(equalToConstant: 16),
-            circleView.heightAnchor.constraint(equalToConstant: 16),
+            infoLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
+            infoLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            infoLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+           //
+            ////            nameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            ////            nameLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            //
+            //            statusTitleLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
+            //            statusTitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            //            statusTitleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            //
+            //            circleView.topAnchor.constraint(equalTo: statusTitleLabel.bottomAnchor),
+            //            circleView.widthAnchor.constraint(equalToConstant: 16),
+            //            circleView.heightAnchor.constraint(equalToConstant: 16),
+            //
+            //            statusLabel.topAnchor.constraint(equalTo: statusTitleLabel.bottomAnchor),
+            //            statusLabel.leadingAnchor.constraint(equalTo: circleView.trailingAnchor, constant: 8),
+            //            statusLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            //
+            //            speciesGenderTitleLabel.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 8),
+            //            speciesGenderTitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            //            speciesGenderTitleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            //
+            //            speciesGenderLabel.topAnchor.constraint(equalTo: speciesGenderTitleLabel.bottomAnchor),
+            //            speciesGenderLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            //            speciesGenderLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            //
+            //            originLocationTitleLabel.topAnchor.constraint(equalTo: speciesGenderLabel.bottomAnchor, constant: 8),
+            //            originLocationTitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            //            originLocationTitleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             
-            statusLabel.topAnchor.constraint(equalTo: statusTitleLabel.bottomAnchor),
-            statusLabel.leadingAnchor.constraint(equalTo: circleView.trailingAnchor, constant: 8),
-            statusLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            
-            speciesGenderTitleLabel.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 8),
-            speciesGenderTitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            speciesGenderTitleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            
-            speciesGenderLabel.topAnchor.constraint(equalTo: speciesGenderTitleLabel.bottomAnchor),
-            speciesGenderLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            speciesGenderLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            
-            originLocationTitleLabel.topAnchor.constraint(equalTo: speciesGenderLabel.bottomAnchor, constant: 8),
-            originLocationTitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            originLocationTitleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            
-            originLocationLabel.topAnchor.constraint(equalTo: originLocationTitleLabel.bottomAnchor),
-            originLocationLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            originLocationLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            
-            episodesTitleLabel.topAnchor.constraint(equalTo: originLocationLabel.bottomAnchor, constant: 8),
-            episodesTitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            episodesTitleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            
-            episodesLabel.topAnchor.constraint(equalTo: episodesTitleLabel.bottomAnchor),
-            episodesLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            episodesLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            
-            linkSkrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            linkSkrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            linkSkrollView.topAnchor.constraint(equalTo: episodesTitleLabel.bottomAnchor),
-            linkSkrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            
-            linkContentView.leadingAnchor.constraint(equalTo: linkSkrollView.leadingAnchor),
-            linkContentView.trailingAnchor.constraint(equalTo: linkSkrollView.trailingAnchor),
-            linkContentView.topAnchor.constraint(equalTo: linkSkrollView.topAnchor),
-            linkContentView.widthAnchor.constraint(equalTo: linkSkrollView.widthAnchor),
+            //            originLocationLabel.topAnchor.constraint(equalTo: originLocationTitleLabel.bottomAnchor),
+            //            originLocationLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            //            originLocationLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            //
+            //            episodesTitleLabel.topAnchor.constraint(equalTo: originLocationLabel.bottomAnchor, constant: 8),
+            //            episodesTitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            //            episodesTitleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            //
+            //            episodesLabel.topAnchor.constraint(equalTo: episodesTitleLabel.bottomAnchor),
+            //            episodesLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            //            episodesLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            //
+            //            linkSkrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            //            linkSkrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            //            linkSkrollView.topAnchor.constraint(equalTo: episodesTitleLabel.bottomAnchor),
+            //            linkSkrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            //
+            //            linkContentView.leadingAnchor.constraint(equalTo: linkSkrollView.leadingAnchor),
+            //            linkContentView.trailingAnchor.constraint(equalTo: linkSkrollView.trailingAnchor),
+            //            linkContentView.topAnchor.constraint(equalTo: linkSkrollView.topAnchor),
+            //            linkContentView.widthAnchor.constraint(equalTo: linkSkrollView.widthAnchor),
         ])
     }
     
@@ -252,29 +343,6 @@ final class CharacterDetailViewController: UIViewController {
         let alert = UIAlertController(title: "Ссылка", message: "\(linkTitle) нажата", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
-    }
-    
-    private func createLink() {
-        var links: [UIButton] = []
-        
-//        for string in character.episode {
-//            let linkButton = UIButton()
-//            linkButton.setTitle(string, for: .normal)
-//            linkButton.addTarget(self, action: #selector(linkTapped(_:)), for: .touchUpInside)
-//            
-//            links.append(linkButton)
-//        }
-        
-        for (index, linkButton) in links.enumerated() {
-            linkButton.translatesAutoresizingMaskIntoConstraints = false
-            linkContentView.addSubview(linkButton)
-            
-            NSLayoutConstraint.activate([
-                linkButton.topAnchor.constraint(equalTo: linkContentView.topAnchor, constant: CGFloat(index * 40 + 20)),
-                linkButton.centerXAnchor.constraint(equalTo: linkContentView.centerXAnchor)
-            ])
-        }
-        linkSkrollView.contentSize = linkContentView.bounds.size
     }
     
     private func updateUI(with characterDetails: Character) {
