@@ -67,21 +67,73 @@ class EpisodesViewController: UIViewController, UICollectionViewDelegateFlowLayo
     var collectionView: UICollectionView!
     var episodes: [Episode] = []
     var filteredEpisodes: [Episode] = []
+    var selectedField: String?
+    let searchFields = ["Номер серии", "Имя персонажа", "Локация"]
     
-    func filterEpisodes(with searchText: String) {
-        if searchText.isEmpty {
-            filteredEpisodes = episodes
+    func filterEpisodes(with searchText: String, selectedField: String?) {
+        if let selectedField = selectedField {
+            if searchText.isEmpty {
+                filteredEpisodes = episodes
+            } else {
+                filteredEpisodes = episodes.filter { episode in
+                    switch selectedField {
+                    case "Номер серии":
+                        return episode.episode.contains(searchText)
+                    case "Имя персонажа":
+                        return episode.episode.contains(searchText)
+                    case "Локация":
+                        return episode.episode.contains(searchText)
+                    default:
+                        return false
+                    }
+                }
+            }
+            self.selectedField = selectedField
         } else {
-            filteredEpisodes = episodes.filter { $0.episode.contains(searchText) }
+            if searchText.isEmpty {
+                filteredEpisodes = episodes
+            } else {
+                filteredEpisodes = episodes.filter { $0.episode.contains(searchText) }
+            }
+            self.selectedField = nil
         }
+        
         collectionView.reloadData()
     }
+
+
+
     
     @objc func searchFieldTextChanged(_ textField: UITextField) {
         if let searchText = textField.text {
-            filterEpisodes(with: searchText)
+            filterEpisodes(with: searchText, selectedField: selectedField)
         }
     }
+    
+//    @objc func segmentedControlValueChanged(_ segmentedControl: UISegmentedControl) {
+//        let selectedIndex = segmentedControl.selectedSegmentIndex
+//        selectedField = searchFields[selectedIndex]
+//        filterEpisodes(with: searchSeriesField.text ?? "")
+//    }
+//    @objc func openBottomSheet() {
+
+    @objc func openBottomSheet() {
+        let alertController = UIAlertController(title: "Выберите поле", message: nil, preferredStyle: .actionSheet)
+        
+        for field in searchFields {
+            let action = UIAlertAction(title: field, style: .default) { [weak self] _ in
+                self?.filterEpisodes(with: self?.searchSeriesField.text ?? "", selectedField: field)
+            }
+            alertController.addAction(action)
+        }
+        
+        let cancelAction = UIAlertAction(title: "Отмена", style: .cancel, handler: nil)
+        alertController.addAction(cancelAction)
+        
+        present(alertController, animated: true, completion: nil)
+    }
+
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -94,6 +146,24 @@ class EpisodesViewController: UIViewController, UICollectionViewDelegateFlowLayo
             searchSeriesField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             searchSeriesField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             searchSeriesField.heightAnchor.constraint(equalToConstant: 50)
+                ])
+        
+//        let segmentedControl = UISegmentedControl(items: searchFields)
+//        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
+//        segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged(_:)), for: .valueChanged)
+//        view.addSubview(segmentedControl)
+        
+        let filterButton = UIButton()
+        filterButton.setTitle("Выбрать поле", for: .normal)
+        filterButton.translatesAutoresizingMaskIntoConstraints = false
+        filterButton.addTarget(self, action: #selector(openBottomSheet), for: .touchUpInside)
+        view.addSubview(filterButton)
+
+        NSLayoutConstraint.activate([
+            filterButton.topAnchor.constraint(equalTo: searchSeriesField.bottomAnchor, constant: 20),
+            filterButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            filterButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+
                 ])
         
         title = "Episodes"
@@ -115,7 +185,7 @@ class EpisodesViewController: UIViewController, UICollectionViewDelegateFlowLayo
         view.addSubview(collectionView)
         
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: searchSeriesField.bottomAnchor, constant: 20),
+            collectionView.topAnchor.constraint(equalTo: filterButton.bottomAnchor, constant: 20),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -126,42 +196,18 @@ class EpisodesViewController: UIViewController, UICollectionViewDelegateFlowLayo
         NetworkServices.shared.getEpisodes { episodes in
                     self.episodes = episodes
                     DispatchQueue.main.async {
-//                        self.collectionView.reloadData()
                         self.searchFieldTextChanged(self.searchSeriesField)
                     }
                 }
-        
+        filterEpisodes(with: "", selectedField: nil)
+
     }
     
     private func createColor(red: CGFloat, green: CGFloat, blue: CGFloat) -> UIColor {
         return UIColor(red: red / 255.0, green: green / 255.0, blue: blue / 255.0, alpha: 1.0)
     }
-    
-//    func updateSearchResults(for searchController: UISearchController) {
-//        filterEpisodesByNumber(searchController.searchBar.text)
-//    }
-//
-//    func filterEpisodesByNumber(_ searchText: String?) {
-//        guard let searchText = searchText, !searchText.isEmpty else {
-//               // Если текст поиска пустой, отобразить все серии
-//            self.collectionView.reloadData()
-//               return
-//           }
-//           
-//           let episodeNumber = Int(searchText) ?? 0
-////           let filteredEpisodes = episodes.filter { $0.number == episodeNumber }
-//        self.collectionView.reloadData()
-//
-//    }
-
-
-    
 }
-//extension EpisodesViewController: UISearchResultsUpdating {
-//    func updateSearchResults(for searchController: UISearchController) {
-//        filterEpisodesByNumber(searchController.searchBar.text)
-//    }
-//}
+
 
 
 
