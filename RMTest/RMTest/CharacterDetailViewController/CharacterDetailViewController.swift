@@ -22,17 +22,17 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
         
         let labels = [
             "Gender",
-            "Label 2",
+            genderCharacter,
             "Status",
             statusCharacter,
             "Specie",
-            "Label 6",
+            specieCharacter,
             "Origin",
-            "Label 8",
+            originCharacter,
             "Type",
-            "Label 10",
+            typeCharacter,
             "Location",
-            "Label 12"
+            locationCharacter
         ]
         
         
@@ -54,20 +54,20 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-           // Обработка выбора ячейки таблицы
-           print("Выбрана ячейка \(indexPath.row + 1)")
-       }
+        // Обработка выбора ячейки таблицы
+        print("Выбрана ячейка \(indexPath.row + 1)")
+    }
     
-//    var tableView: UITableView!
-
+    //    var tableView: UITableView!
+    
     private var tableView: UITableView = {
         var table = UITableView()
-//        table.translatesAutoresizingMaskIntoConstraints = false
+        //        table.translatesAutoresizingMaskIntoConstraints = false
         return table
     }()
     private let episode: Episode
     
-//    private let character: Character
+    //    private let character: Character
     
     private let nameLabel: UILabel = {
         let label = UILabel()
@@ -192,7 +192,7 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
     
     init(episode: Episode) {
         self.episode = episode
-//        self.character = character
+        //        self.character = character
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -203,7 +203,7 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-//        loadData()
+        //        loadData()
         prepareView()
         
         loadData()
@@ -221,15 +221,15 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            ])
+        ])
         tableView.reloadData()
     }
     
     private func prepareView() {
-//        let color = createColor(red: 34, green: 39, blue: 45)
+        //        let color = createColor(red: 34, green: 39, blue: 45)
         view.backgroundColor = .white
         addSubview()
-       
+        
         setupConstraint()
     }
     
@@ -273,7 +273,7 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
             
             nameLabel.topAnchor.constraint(equalTo: characterImageView.bottomAnchor, constant: 16),
             nameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-           
+            
             infoLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
             infoLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             infoLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
@@ -288,16 +288,31 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
         present(alert, animated: true, completion: nil)
     }
     
+    private var genderCharacter = ""
     private var statusCharacter = ""
+    private var specieCharacter = ""
+    private var originCharacter = ""
+    private var typeCharacter = ""
+    private var locationCharacter = ""
     private func updateUI(with characterDetails: Character) {
-                nameLabel.text = characterDetails.name
+        nameLabel.text = characterDetails.name
         //        statusTitleLabel.text = "Live status:"
         //        if characterDetails.status == "Alive" {
         //            circleView.backgroundColor = .green
         //        } else {
         //            circleView.backgroundColor = .red
         //        }
-        statusCharacter = characterDetails.status
+        genderCharacter = "\(characterDetails.gender)"
+        statusCharacter = "\(characterDetails.status)"
+        specieCharacter = "\(characterDetails.species)"
+        originCharacter = "\(characterDetails.origin.name)"
+        if characterDetails.type == "" {
+            typeCharacter = "unknown"
+        } else {
+            typeCharacter = "\(characterDetails.type)"
+        }
+       
+        locationCharacter = "\(characterDetails.location.name)"
         //        statusLabel.text = " \(characterDetails.status)"
         //        speciesGenderTitleLabel.text = "Species and gender: "
         //        speciesGenderLabel.text = "\(characterDetails.species) (\(characterDetails.gender))"

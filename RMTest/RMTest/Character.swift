@@ -13,6 +13,7 @@ struct Character: Decodable {
     let name: String
     let status: String
     let species: String
+    let type: String
     let image: String
     let gender: Gender
     let origin, location: Location
