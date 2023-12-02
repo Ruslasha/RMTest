@@ -15,6 +15,7 @@ struct Episode: Decodable {
     let episode: String
 //    let image: String
     var characters: [String]
+//    var characterDetail: Character
 }
 
 
