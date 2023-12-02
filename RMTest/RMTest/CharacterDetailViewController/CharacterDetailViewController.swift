@@ -17,7 +17,6 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
         // Создание и настройка ячейки таблицы
         let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
         cell.contentView.layoutMargins = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-
         let labelWidth = cell.contentView.frame.width
         let labelHeight = cell.contentView.frame.height / 2
         
@@ -25,7 +24,7 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
             "Gender",
             "Label 2",
             "Status",
-            "Label 4",
+            statusCharacter,
             "Specie",
             "Label 6",
             "Origin",
@@ -204,15 +203,10 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+//        loadData()
         prepareView()
-
+        
         loadData()
-    }
-    
-    private func prepareView() {
-//        let color = createColor(red: 34, green: 39, blue: 45)
-        view.backgroundColor = .white
-        addSubview()
         tableView = UITableView(frame: view.bounds, style: .plain)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         // Настройка делегата и источника данных для таблицы
@@ -221,6 +215,21 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
         
         // Добавление UITableView в иерархию представлений
         view.addSubview(tableView)
+        NSLayoutConstraint.activate([
+            
+            tableView.topAnchor.constraint(equalTo: infoLabel.bottomAnchor, constant: 20),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            ])
+        tableView.reloadData()
+    }
+    
+    private func prepareView() {
+//        let color = createColor(red: 34, green: 39, blue: 45)
+        view.backgroundColor = .white
+        addSubview()
+       
         setupConstraint()
     }
     
@@ -230,21 +239,9 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
     
     private func addSubview() {
         view.addSubview(characterImageView)
-        view.addSubview(tableView)
-       view.addSubview(nameLabel)
+        view.addSubview(nameLabel)
         view.addSubview(infoLabel)
-//        view.addSubview(idLabel)
-//        view.addSubview(statusTitleLabel)
-//        view.addSubview(statusLabel)
-//        view.addSubview(speciesGenderTitleLabel)
-//        view.addSubview(speciesGenderLabel)
-//        view.addSubview(originLocationTitleLabel)
-//        view.addSubview(originLocationLabel)
-//        view.addSubview(episodesTitleLabel)
-//        view.addSubview(episodesLabel)
-//        view.addSubview(linkSkrollView)
-//        view.addSubview(linkContentView)
-//        view.addSubview(circleView)
+        
     }
     
     private func loadData() {
@@ -253,6 +250,7 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
             case .success(let characterDetails):
                 DispatchQueue.main.async {
                     self?.updateUI(with: characterDetails)
+                    
                 }
             case .failure(let error):
                 print("Error loading data: \(error.localizedDescription)")
@@ -267,7 +265,6 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
             
             
             characterImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
-            //            characterImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             characterImageView.widthAnchor.constraint(equalToConstant: 200),
             characterImageView.heightAnchor.constraint(equalToConstant: 200),
             characterImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -276,64 +273,10 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
             
             nameLabel.topAnchor.constraint(equalTo: characterImageView.bottomAnchor, constant: 16),
             nameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            
-            tableView.topAnchor.constraint(equalTo: infoLabel.bottomAnchor, constant: 20),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            
+           
             infoLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
             infoLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             infoLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-           //
-            ////            nameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            ////            nameLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            //
-            //            statusTitleLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
-            //            statusTitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            //            statusTitleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            //
-            //            circleView.topAnchor.constraint(equalTo: statusTitleLabel.bottomAnchor),
-            //            circleView.widthAnchor.constraint(equalToConstant: 16),
-            //            circleView.heightAnchor.constraint(equalToConstant: 16),
-            //
-            //            statusLabel.topAnchor.constraint(equalTo: statusTitleLabel.bottomAnchor),
-            //            statusLabel.leadingAnchor.constraint(equalTo: circleView.trailingAnchor, constant: 8),
-            //            statusLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            //
-            //            speciesGenderTitleLabel.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 8),
-            //            speciesGenderTitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            //            speciesGenderTitleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            //
-            //            speciesGenderLabel.topAnchor.constraint(equalTo: speciesGenderTitleLabel.bottomAnchor),
-            //            speciesGenderLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            //            speciesGenderLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            //
-            //            originLocationTitleLabel.topAnchor.constraint(equalTo: speciesGenderLabel.bottomAnchor, constant: 8),
-            //            originLocationTitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            //            originLocationTitleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            
-            //            originLocationLabel.topAnchor.constraint(equalTo: originLocationTitleLabel.bottomAnchor),
-            //            originLocationLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            //            originLocationLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            //
-            //            episodesTitleLabel.topAnchor.constraint(equalTo: originLocationLabel.bottomAnchor, constant: 8),
-            //            episodesTitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            //            episodesTitleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            //
-            //            episodesLabel.topAnchor.constraint(equalTo: episodesTitleLabel.bottomAnchor),
-            //            episodesLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            //            episodesLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            //
-            //            linkSkrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            //            linkSkrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            //            linkSkrollView.topAnchor.constraint(equalTo: episodesTitleLabel.bottomAnchor),
-            //            linkSkrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            //
-            //            linkContentView.leadingAnchor.constraint(equalTo: linkSkrollView.leadingAnchor),
-            //            linkContentView.trailingAnchor.constraint(equalTo: linkSkrollView.trailingAnchor),
-            //            linkContentView.topAnchor.constraint(equalTo: linkSkrollView.topAnchor),
-            //            linkContentView.widthAnchor.constraint(equalTo: linkSkrollView.widthAnchor),
         ])
     }
     
@@ -345,25 +288,28 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
         present(alert, animated: true, completion: nil)
     }
     
+    private var statusCharacter = ""
     private func updateUI(with characterDetails: Character) {
-        nameLabel.text = characterDetails.name
-        statusTitleLabel.text = "Live status:"
-        if characterDetails.status == "Alive" {
-            circleView.backgroundColor = .green
-        } else {
-            circleView.backgroundColor = .red
-        }
-        statusLabel.text = " \(characterDetails.status)"
-        speciesGenderTitleLabel.text = "Species and gender: "
-        speciesGenderLabel.text = "\(characterDetails.species) (\(characterDetails.gender))"
-        originLocationTitleLabel.text = "Last known location:"
-        originLocationLabel.text = "\(characterDetails.location.name)"
-        episodesTitleLabel.text = "Episodes: "
+                nameLabel.text = characterDetails.name
+        //        statusTitleLabel.text = "Live status:"
+        //        if characterDetails.status == "Alive" {
+        //            circleView.backgroundColor = .green
+        //        } else {
+        //            circleView.backgroundColor = .red
+        //        }
+        statusCharacter = characterDetails.status
+        //        statusLabel.text = " \(characterDetails.status)"
+        //        speciesGenderTitleLabel.text = "Species and gender: "
+        //        speciesGenderLabel.text = "\(characterDetails.species) (\(characterDetails.gender))"
+        //        originLocationTitleLabel.text = "Last known location:"
+        //        originLocationLabel.text = "\(characterDetails.location.name)"
+        //        episodesTitleLabel.text = "Episodes: "
         
         if URL(string: characterDetails.image) != nil {
             if let url = URL(string: characterDetails.image) {
                 networkServices.loadImage(url: url, in: self.characterImageView)
             }
-             }
+        }
+        tableView.reloadData()
     }
 }
