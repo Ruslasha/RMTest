@@ -7,7 +7,7 @@
 
 import UIKit
 
-class EpisodesViewController: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+class EpisodesViewController: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 //        return episodes.count
@@ -15,10 +15,38 @@ class EpisodesViewController: UIViewController, UICollectionViewDelegateFlowLayo
 
     }
     
+    
+    @objc func handleSwipeGesture(_ gesture: UISwipeGestureRecognizer) {
+        if gesture.state == .ended {
+            // Получаем ячейку, на которую был сделан свайп
+            guard let cell = gesture.view as? UICollectionViewCell else { return }
+            
+            // Получаем индекс ячейки
+            guard let indexPath = collectionView.indexPath(for: cell) else { return }
+            
+            // Удаляем ячейку из источника данных
+            filteredEpisodes.remove(at: indexPath.item)
+            
+            // Удаляем ячейку из коллекции
+//            collectionView.deleteItems(at: [indexPath])
+            
+            collectionView.performBatchUpdates({
+                collectionView.deleteItems(at: [indexPath])
+            }, completion: nil)
+
+        }
+    }
+
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EpisodeCell", for: indexPath) as! EpisodeCell
         
+        // Добавляем жест свайпа влево
+            let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGesture(_:)))
+            swipeGesture.direction = .left
+            cell.addGestureRecognizer(swipeGesture)
+
 //        let episode = episodes[indexPath.item]
         let episode = filteredEpisodes[indexPath.row]
         cell.configure(with: episode)
@@ -109,13 +137,6 @@ class EpisodesViewController: UIViewController, UICollectionViewDelegateFlowLayo
             filterEpisodes(with: searchText, selectedField: selectedField)
         }
     }
-    
-//    @objc func segmentedControlValueChanged(_ segmentedControl: UISegmentedControl) {
-//        let selectedIndex = segmentedControl.selectedSegmentIndex
-//        selectedField = searchFields[selectedIndex]
-//        filterEpisodes(with: searchSeriesField.text ?? "")
-//    }
-//    @objc func openBottomSheet() {
 
     @objc func openBottomSheet() {
         let alertController = UIAlertController(title: "Выберите поле", message: nil, preferredStyle: .actionSheet)
