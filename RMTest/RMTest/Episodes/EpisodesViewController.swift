@@ -59,8 +59,18 @@ class EpisodesViewController: UIViewController, UICollectionViewDelegateFlowLayo
         let detailViewController = CharacterDetailViewController(episode: episode)
             let navController = UINavigationController(rootViewController: detailViewController)
             
-            let backButton = UIBarButtonItem(title: "Назад", style: .plain, target: self, action: #selector(backButtonTapped))
+            let backButton = UIBarButtonItem(title: "\u{2190} GO BACK", style: .plain, target: self, action: #selector(backButtonTapped))
+        backButton.tintColor = .black
             detailViewController.navigationItem.leftBarButtonItem = backButton
+        let image = UIImage(named: "logoBlack")
+        
+
+        // Создайте UIBarButtonItem с вашей картинкой
+        let imageButton = UIBarButtonItem(image: image, style: .plain, target: self, action: .none)
+        imageButton.tintColor = .black
+        // Установите кнопку на navigationItem в качестве правой кнопки
+        detailViewController.navigationItem.rightBarButtonItem = imageButton
+
  
             navController.modalPresentationStyle = .fullScreen
             present(navController, animated: false, completion: nil)

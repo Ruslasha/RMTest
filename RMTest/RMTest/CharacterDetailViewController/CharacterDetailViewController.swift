@@ -86,106 +86,27 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
         return label
     }()
     
-    private let idLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16)
-        label.textColor = UIColor.white
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    private let statusTitleLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 12)
-        label.textColor = UIColor.black
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    private let statusLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 16)
-        label.textColor = UIColor.gray
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    private let speciesGenderTitleLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 12)
-        label.textColor = UIColor.black
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    private let speciesGenderLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 16)
-        label.textColor = UIColor.gray
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    private let originLocationTitleLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 12)
-        label.textColor = UIColor.black
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    private let originLocationLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 16)
-        label.textColor = UIColor.gray
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
     private let characterImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 100
+        imageView.layer.cornerRadius = 75
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
-    private let episodesTitleLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 16)
-        label.textColor = UIColor.black
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
+    private let logoIconButton: UIButton = {
+        let logoButton = UIButton()
+        logoButton.translatesAutoresizingMaskIntoConstraints = false
+        logoButton.setImage(UIImage(named: "PhotoIcon"), for: .normal)
+        logoButton.contentMode = .scaleAspectFit
+//        logoButton.addTarget(CharacterDetailViewController.self, action: #selector(logoButtonTapped), for: .touchUpInside)
+        return logoButton
     }()
     
-    private let episodesLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 16)
-        label.textColor = UIColor.gray
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    private let linkSkrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        return scrollView
-    }()
-    
-    private let linkContentView: UIView = {
-        let linkContentView = UIView()
-        linkContentView.translatesAutoresizingMaskIntoConstraints = false
-        return linkContentView
-    }()
-    
-    private let circleView: UIView = {
-        let circleView = UIView()
-        circleView.layer.cornerRadius = 8
-        circleView.clipsToBounds = true
-        circleView.translatesAutoresizingMaskIntoConstraints = false
-        return circleView
-    }()
+    @objc private func logoButtonTapped() {
+//        dismiss(animated: false, completion: nil)
+    }
     
     private let networkServices = NetworkServices()
     
@@ -222,6 +143,7 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
+        logoIconButton.addTarget(CharacterDetailViewController.self, action: #selector(logoButtonTapped), for: .touchUpInside)
         tableView.reloadData()
     }
     
@@ -241,6 +163,7 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
         view.addSubview(characterImageView)
         view.addSubview(nameLabel)
         view.addSubview(infoLabel)
+        view.addSubview(logoIconButton)
         
     }
     
@@ -265,8 +188,8 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
             
             
             characterImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
-            characterImageView.widthAnchor.constraint(equalToConstant: 200),
-            characterImageView.heightAnchor.constraint(equalToConstant: 200),
+            characterImageView.widthAnchor.constraint(equalToConstant: 150),
+            characterImageView.heightAnchor.constraint(equalToConstant: 150),
             characterImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
             
@@ -277,6 +200,14 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
             infoLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
             infoLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             infoLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            
+            logoIconButton.leadingAnchor.constraint(equalTo: characterImageView.trailingAnchor, constant: 20),
+//            logoIconButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+//            logoIconButton.bottomAnchor.constraint(equalTo: nameLabel.topAnchor, constant: -10),
+            logoIconButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 75),
+            logoIconButton.widthAnchor.constraint(equalToConstant: 30),
+            logoIconButton.heightAnchor.constraint(equalToConstant: 30),
+
         ])
     }
     
