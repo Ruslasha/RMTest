@@ -106,7 +106,40 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
     
     @objc private func logoButtonTapped() {
 //        dismiss(animated: false, completion: nil)
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            
+            // Добавьте опцию "Сделать фото"
+            let takePhotoAction = UIAlertAction(title: "Сделать фото", style: .default) { (_) in
+                // Ваш код для обработки события "Сделать фото"
+            }
+            alertController.addAction(takePhotoAction)
+            
+            // Добавьте опцию "Выбрать из галереи"
+            let chooseFromGalleryAction = UIAlertAction(title: "Выбрать из галереи", style: .default) { (_) in
+                self.chooseFromGallery()
+            }
+            alertController.addAction(chooseFromGalleryAction)
+            
+            // Добавьте опцию "Отмена"
+            let cancelAction = UIAlertAction(title: "Отмена", style: .cancel, handler: nil)
+            alertController.addAction(cancelAction)
+            
+            // Покажите Action Sheet
+            if let popoverController = alertController.popoverPresentationController {
+                popoverController.sourceView = logoIconButton
+                popoverController.sourceRect = logoIconButton.bounds
+            }
+            present(alertController, animated: true, completion: nil)
+
     }
+    
+    @objc func chooseFromGallery() {
+        let imagePicker = UIImagePickerController()
+        imagePicker.sourceType = .photoLibrary
+        imagePicker.delegate = self
+        present(imagePicker, animated: true, completion: nil)
+    }
+
     
     private let networkServices = NetworkServices()
     
@@ -143,7 +176,7 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
-        logoIconButton.addTarget(CharacterDetailViewController.self, action: #selector(logoButtonTapped), for: .touchUpInside)
+        logoIconButton.addTarget(self, action: #selector(logoButtonTapped), for: .touchUpInside)
         tableView.reloadData()
     }
     
@@ -259,3 +292,22 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
         tableView.reloadData()
     }
 }
+
+// Реализуйте делегат UIImagePickerControllerDelegate и UINavigationControllerDelegate
+extension CharacterDetailViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    // Обработайте выбор фото из галереи
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            characterImageView.image = pickedImage
+        }
+        
+        dismiss(animated: true, completion: nil)
+    }
+    
+    // Обработайте отмену выбора фото
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
+}
+
