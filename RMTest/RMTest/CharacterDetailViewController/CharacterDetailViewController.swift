@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import Photos
 
 final class CharacterDetailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate  {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -106,6 +107,7 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
     
     @objc private func logoButtonTapped() {
 //        dismiss(animated: false, completion: nil)
+
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
             
             // Добавьте опцию "Сделать фото"
@@ -116,7 +118,8 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
             
             // Добавьте опцию "Выбрать из галереи"
             let chooseFromGalleryAction = UIAlertAction(title: "Выбрать из галереи", style: .default) { (_) in
-                self.chooseFromGallery()
+                self.checkPhotoLibraryAuthorization()
+//                self.chooseFromGallery()
             }
             alertController.addAction(chooseFromGalleryAction)
             
@@ -139,6 +142,37 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
         imagePicker.delegate = self
         present(imagePicker, animated: true, completion: nil)
     }
+    
+    func checkPhotoLibraryAuthorization() {
+        let status = PHPhotoLibrary.authorizationStatus()
+        
+        switch status {
+        case .notDetermined:
+            // Если разрешение еще не запрашивалось, запросите доступ к фото
+            PHPhotoLibrary.requestAuthorization { (newStatus) in
+                if newStatus == .authorized {
+                    // Разрешение получено, выполните необходимые действия
+                    DispatchQueue.main.async {
+                        self.chooseFromGallery()
+                    }
+                } else {
+                    // Разрешение не получено, выполните необходимые действия (например, показать предупреждение)
+                }
+            }
+            
+        case .authorized:
+            // Разрешение уже получено, выполните необходимые действия
+            chooseFromGallery()
+            
+        case .denied, .restricted:
+            // Разрешение отклонено или ограничено, выполните необходимые действия (например, показать предупреждение)
+            break
+            
+        @unknown default:
+            break
+        }
+    }
+
 
     
     private let networkServices = NetworkServices()
