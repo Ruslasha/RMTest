@@ -112,7 +112,19 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
             
             // Добавьте опцию "Сделать фото"
             let takePhotoAction = UIAlertAction(title: "Сделать фото", style: .default) { (_) in
-                // Ваш код для обработки события "Сделать фото"
+                // Проверяем, доступна ли камера
+                if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                    let imagePicker = UIImagePickerController()
+                    imagePicker.sourceType = .camera
+                    imagePicker.delegate = self // Установите соответствующий делегат для обработки выбранного фото
+                    
+                    // Отобразить контроллер для съемки фото
+                    self.present(imagePicker, animated: true, completion: nil)
+                } else {
+                    // Камера недоступна на этом устройстве
+                    // Ваш код обработки ошибки или вывод сообщения об ошибке пользователю
+                }
+
             }
             alertController.addAction(takePhotoAction)
             
@@ -156,7 +168,8 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
                         self.chooseFromGallery()
                     }
                 } else {
-                    // Разрешение не получено, выполните необходимые действия (например, показать предупреждение)
+                    self.showSettingsAlert()
+
                 }
             }
             
@@ -165,14 +178,29 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
             chooseFromGallery()
             
         case .denied, .restricted:
-            // Разрешение отклонено или ограничено, выполните необходимые действия (например, показать предупреждение)
-            break
+            showSettingsAlert()
+
             
         @unknown default:
             break
         }
     }
 
+    func showSettingsAlert() {
+        let alertController = UIAlertController(title: "Доступ к фотографиям отклонен", message: "Для использования фотографий необходимо разрешить доступ в настройках телефона.", preferredStyle: .alert)
+        
+        let settingsAction = UIAlertAction(title: "Настройки", style: .default) { (_) in
+            if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
+                UIApplication.shared.open(settingsURL, options: [:], completionHandler: nil)
+            }
+        }
+        alertController.addAction(settingsAction)
+        
+        let cancelAction = UIAlertAction(title: "Отмена", style: .cancel, handler: nil)
+        alertController.addAction(cancelAction)
+        
+        present(alertController, animated: true, completion: nil)
+    }
 
     
     private let networkServices = NetworkServices()
@@ -334,6 +362,9 @@ extension CharacterDetailViewController: UIImagePickerControllerDelegate, UINavi
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             characterImageView.image = pickedImage
+        }
+        if let image = info[.originalImage] as? UIImage {
+            characterImageView.image = image
         }
         
         dismiss(animated: true, completion: nil)

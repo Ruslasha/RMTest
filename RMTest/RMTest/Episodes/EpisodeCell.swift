@@ -74,6 +74,15 @@ final class EpisodeCell: UICollectionViewCell {
     
     private func setupViews() {
         addSubview()
+        let heartButton = HeartButton()
+        heartButton.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(heartButton)
+        NSLayoutConstraint.activate([
+            heartButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5),
+            heartButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5),
+            heartButton.widthAnchor.constraint(equalToConstant: 50),
+            heartButton.heightAnchor.constraint(equalToConstant: 50),
+        ])
         setupConstraint()
     }
     
