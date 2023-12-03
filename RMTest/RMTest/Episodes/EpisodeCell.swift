@@ -45,6 +45,7 @@ final class EpisodeCell: UICollectionViewCell {
     private let nameEpisodeLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 20)
+        label.adjustsFontSizeToFitWidth = true
         label.textColor = UIColor.black
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -56,6 +57,12 @@ final class EpisodeCell: UICollectionViewCell {
         label.textColor = UIColor.black
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
+    }()
+    
+    private let heartButton: UIButton = {
+        let heart = HeartButton()
+        heart.translatesAutoresizingMaskIntoConstraints = false
+        return heart
     }()
     
     override init(frame: CGRect) {
@@ -74,15 +81,15 @@ final class EpisodeCell: UICollectionViewCell {
     
     private func setupViews() {
         addSubview()
-        let heartButton = HeartButton()
-        heartButton.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(heartButton)
-        NSLayoutConstraint.activate([
-            heartButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5),
-            heartButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5),
-            heartButton.widthAnchor.constraint(equalToConstant: 50),
-            heartButton.heightAnchor.constraint(equalToConstant: 50),
-        ])
+//        let heartButton = HeartButton()
+//        heartButton.translatesAutoresizingMaskIntoConstraints = false
+//        contentView.addSubview(heartButton)
+//        NSLayoutConstraint.activate([
+//            heartButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5),
+//            heartButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5),
+//            heartButton.widthAnchor.constraint(equalToConstant: 50),
+//            heartButton.heightAnchor.constraint(equalToConstant: 50),
+//        ])
         setupConstraint()
     }
     
@@ -93,6 +100,7 @@ final class EpisodeCell: UICollectionViewCell {
         contentView.addSubview(randomCharacterLinkLabel)
         contentView.addSubview(characterImageView)
         contentView.addSubview(nameCharacterLabel)
+        contentView.addSubview(heartButton)
         
     }
     
@@ -121,7 +129,12 @@ final class EpisodeCell: UICollectionViewCell {
             
             nameEpisodeLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
             nameEpisodeLabel.leadingAnchor.constraint(equalTo: monitorImageView.trailingAnchor, constant: 10),
-            nameEpisodeLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            nameEpisodeLabel.trailingAnchor.constraint(equalTo: heartButton.leadingAnchor, constant: -5),
+            
+            heartButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5),
+            heartButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5),
+            heartButton.widthAnchor.constraint(equalToConstant: 50),
+            heartButton.heightAnchor.constraint(equalToConstant: 50),
         
         ])
         

@@ -1,6 +1,9 @@
 import UIKit
 
 class HeartButton: UIButton {
+    
+    private var isFilled = false
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupButton()
@@ -12,17 +15,14 @@ class HeartButton: UIButton {
     }
     
     private func setupButton() {
-        
         let heartImage = UIImage(systemName: "heart")?.withRenderingMode(.alwaysTemplate).withTintColor(.red)
-           let scaledHeartImage = resizeImage(heartImage, targetSize: CGSize(width: 30, height: 30))
+        let scaledHeartImage = resizeImage(heartImage, targetSize: CGSize(width: 30, height: 30))
         let filledHeartImage = UIImage(systemName: "heart.fill")?.withRenderingMode(.alwaysTemplate).withTintColor(.red)
-           let filledScaledHeartImage = resizeImage(filledHeartImage, targetSize: CGSize(width: 30, height: 30))
+        let filledScaledHeartImage = resizeImage(filledHeartImage, targetSize: CGSize(width: 30, height: 30))
         
         setImage(scaledHeartImage, for: .normal)
         setImage(filledScaledHeartImage, for: .highlighted)
-//        tintColor = .red
         addTarget(self, action: #selector(animateButton), for: .touchUpInside)
-
     }
     
     private func resizeImage(_ image: UIImage?, targetSize: CGSize) -> UIImage? {
@@ -39,6 +39,14 @@ class HeartButton: UIButton {
     }
     
     @objc private func animateButton() {
+        isFilled.toggle()
+        
+        UIView.transition(with: self, duration: 0.2, options: .transitionCrossDissolve, animations: {
+            let heartImage = self.isFilled ? UIImage(systemName: "heart.fill")?.withRenderingMode(.alwaysTemplate).withTintColor(.red) : UIImage(systemName: "heart")?.withRenderingMode(.alwaysTemplate).withTintColor(.red)
+            let scaledHeartImage = self.resizeImage(heartImage, targetSize: CGSize(width: 30, height: 30))
+            self.setImage(scaledHeartImage, for: .normal)
+        }, completion: nil)
+        
         UIView.animate(withDuration: 0.1, animations: {
             self.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
         }, completion: { _ in
