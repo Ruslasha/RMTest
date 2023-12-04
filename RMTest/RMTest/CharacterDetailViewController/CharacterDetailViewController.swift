@@ -15,7 +15,7 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // Создание и настройка ячейки таблицы
+        
         let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
         cell.contentView.layoutMargins = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         let labelWidth = cell.contentView.frame.width
@@ -36,8 +36,6 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
             locationCharacter
         ]
         
-        
-        //        for i in 0..<2 {
         let labelTop = UILabel(frame: CGRect(x: 0, y: CGFloat(0) * labelHeight, width: labelWidth, height: labelHeight))
         labelTop.font = UIFont.boldSystemFont(ofSize: 16)
         labelTop.text = labels[indexPath.row * 2]
@@ -47,28 +45,21 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
         labelBottom.font = UIFont.systemFont(ofSize: 14)
         labelBottom.text = labels[indexPath.row * 2 + 1]
         cell.contentView.addSubview(labelBottom)
-        //        }
-        
-        
+
         return cell
         
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // Обработка выбора ячейки таблицы
         print("Выбрана ячейка \(indexPath.row + 1)")
     }
     
-    //    var tableView: UITableView!
-    
     private var tableView: UITableView = {
         var table = UITableView()
-        //        table.translatesAutoresizingMaskIntoConstraints = false
         return table
     }()
-    private let episode: Episode
     
-    //    private let character: Character
+    private let episode: Episode
     
     private let nameLabel: UILabel = {
         let label = UILabel()
@@ -101,45 +92,33 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
         logoButton.translatesAutoresizingMaskIntoConstraints = false
         logoButton.setImage(UIImage(named: "PhotoIcon"), for: .normal)
         logoButton.contentMode = .scaleAspectFit
-//        logoButton.addTarget(CharacterDetailViewController.self, action: #selector(logoButtonTapped), for: .touchUpInside)
         return logoButton
     }()
     
     @objc private func logoButtonTapped() {
-//        dismiss(animated: false, completion: nil)
 
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
             
-            // Добавьте опцию "Сделать фото"
             let takePhotoAction = UIAlertAction(title: "Сделать фото", style: .default) { (_) in
-                // Проверяем, доступна ли камера
                 if UIImagePickerController.isSourceTypeAvailable(.camera) {
                     let imagePicker = UIImagePickerController()
                     imagePicker.sourceType = .camera
-                    imagePicker.delegate = self // Установите соответствующий делегат для обработки выбранного фото
-                    
-                    // Отобразить контроллер для съемки фото
+                    imagePicker.delegate = self
                     self.present(imagePicker, animated: true, completion: nil)
                 } else {
-                    // Камера недоступна на этом устройстве
-                    // Ваш код обработки ошибки или вывод сообщения об ошибке пользователю
                 }
 
             }
             alertController.addAction(takePhotoAction)
             
-            // Добавьте опцию "Выбрать из галереи"
             let chooseFromGalleryAction = UIAlertAction(title: "Выбрать из галереи", style: .default) { (_) in
                 self.checkPhotoLibraryAuthorization()
-//                self.chooseFromGallery()
             }
             alertController.addAction(chooseFromGalleryAction)
             
-            // Добавьте опцию "Отмена"
             let cancelAction = UIAlertAction(title: "Отмена", style: .cancel, handler: nil)
             alertController.addAction(cancelAction)
             
-            // Покажите Action Sheet
             if let popoverController = alertController.popoverPresentationController {
                 popoverController.sourceView = logoIconButton
                 popoverController.sourceRect = logoIconButton.bounds
@@ -160,26 +139,21 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
         
         switch status {
         case .notDetermined:
-            // Если разрешение еще не запрашивалось, запросите доступ к фото
             PHPhotoLibrary.requestAuthorization { (newStatus) in
                 if newStatus == .authorized {
-                    // Разрешение получено, выполните необходимые действия
                     DispatchQueue.main.async {
                         self.chooseFromGallery()
                     }
                 } else {
                     self.showSettingsAlert()
-
                 }
             }
             
         case .authorized:
-            // Разрешение уже получено, выполните необходимые действия
             chooseFromGallery()
             
         case .denied, .restricted:
             showSettingsAlert()
-
             
         @unknown default:
             break
@@ -208,7 +182,6 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
     
     init(episode: Episode) {
         self.episode = episode
-        //        self.character = character
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -219,20 +192,16 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        //        loadData()
         prepareView()
         
         loadData()
         tableView = UITableView(frame: view.bounds, style: .plain)
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        // Настройка делегата и источника данных для таблицы
         tableView.delegate = self
         tableView.dataSource = self
         
-        // Добавление UITableView в иерархию представлений
         view.addSubview(tableView)
         NSLayoutConstraint.activate([
-            
             tableView.topAnchor.constraint(equalTo: infoLabel.bottomAnchor, constant: 20),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
@@ -243,10 +212,9 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
     }
     
     private func prepareView() {
-        //        let color = createColor(red: 34, green: 39, blue: 45)
+
         view.backgroundColor = .white
         addSubview()
-        
         setupConstraint()
     }
     
@@ -259,7 +227,6 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
         view.addSubview(nameLabel)
         view.addSubview(infoLabel)
         view.addSubview(logoIconButton)
-        
     }
     
     private func loadData() {
@@ -268,7 +235,6 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
             case .success(let characterDetails):
                 DispatchQueue.main.async {
                     self?.updateUI(with: characterDetails)
-                    
                 }
             case .failure(let error):
                 print("Error loading data: \(error.localizedDescription)")
@@ -280,15 +246,11 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
     private func setupConstraint() {
         NSLayoutConstraint.activate([
             
-            
-            
             characterImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
             characterImageView.widthAnchor.constraint(equalToConstant: 150),
             characterImageView.heightAnchor.constraint(equalToConstant: 150),
             characterImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            
-            
-            
+                
             nameLabel.topAnchor.constraint(equalTo: characterImageView.bottomAnchor, constant: 16),
             nameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
@@ -297,8 +259,6 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
             infoLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             
             logoIconButton.leadingAnchor.constraint(equalTo: characterImageView.trailingAnchor, constant: 20),
-//            logoIconButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-//            logoIconButton.bottomAnchor.constraint(equalTo: nameLabel.topAnchor, constant: -10),
             logoIconButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 75),
             logoIconButton.widthAnchor.constraint(equalToConstant: 30),
             logoIconButton.heightAnchor.constraint(equalToConstant: 30),
@@ -322,12 +282,6 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
     private var locationCharacter = ""
     private func updateUI(with characterDetails: Character) {
         nameLabel.text = characterDetails.name
-        //        statusTitleLabel.text = "Live status:"
-        //        if characterDetails.status == "Alive" {
-        //            circleView.backgroundColor = .green
-        //        } else {
-        //            circleView.backgroundColor = .red
-        //        }
         genderCharacter = "\(characterDetails.gender)"
         statusCharacter = "\(characterDetails.status)"
         specieCharacter = "\(characterDetails.species)"
@@ -339,12 +293,6 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
         }
        
         locationCharacter = "\(characterDetails.location.name)"
-        //        statusLabel.text = " \(characterDetails.status)"
-        //        speciesGenderTitleLabel.text = "Species and gender: "
-        //        speciesGenderLabel.text = "\(characterDetails.species) (\(characterDetails.gender))"
-        //        originLocationTitleLabel.text = "Last known location:"
-        //        originLocationLabel.text = "\(characterDetails.location.name)"
-        //        episodesTitleLabel.text = "Episodes: "
         
         if URL(string: characterDetails.image) != nil {
             if let url = URL(string: characterDetails.image) {
@@ -355,10 +303,8 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
     }
 }
 
-// Реализуйте делегат UIImagePickerControllerDelegate и UINavigationControllerDelegate
 extension CharacterDetailViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    // Обработайте выбор фото из галереи
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             characterImageView.image = pickedImage
@@ -366,11 +312,9 @@ extension CharacterDetailViewController: UIImagePickerControllerDelegate, UINavi
         if let image = info[.originalImage] as? UIImage {
             characterImageView.image = image
         }
-        
         dismiss(animated: true, completion: nil)
     }
     
-    // Обработайте отмену выбора фото
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
     }

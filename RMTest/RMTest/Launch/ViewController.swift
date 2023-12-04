@@ -8,7 +8,7 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -39,7 +39,6 @@ class ViewController: UIViewController {
         rotationAnimation.repeatCount = .infinity
         imageView.layer.add(rotationAnimation, forKey: "rotationAnimation")
         
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             
             let tabBarViewController = UITabBarController()
@@ -50,7 +49,6 @@ class ViewController: UIViewController {
             tabBarViewController.setViewControllers([episodesViewController, favouritesViewController], animated: false)
             tabBarViewController.tabBar.isTranslucent = false
             tabBarViewController.tabBar.backgroundColor = .white
-//            tabBarViewController.tabBar.barTintColor = UIColor.white
             guard let items = tabBarViewController.tabBar.items else {
                 return
             }
@@ -61,15 +59,9 @@ class ViewController: UIViewController {
             items[1].image = UIImage(systemName: images[1])
             
             tabBarViewController.modalPresentationStyle = .fullScreen
-//            tabBarViewController.tabBar.barTintColor = UIColor.white
             self.present(tabBarViewController, animated: false)
             
-                }
-
-        
-        
+        }
     }
-
-
 }
 

@@ -20,8 +20,6 @@ final class EpisodeCell: UICollectionViewCell {
     
     private let monitorImageView: UIImageView = {
         let imageView = UIImageView()
-//        imageView.contentMode = .scaleAspectFill
-//        imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -67,14 +65,12 @@ final class EpisodeCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         setupViews()
         setupCellAppearance()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        
         setupViews()
         setupCellAppearance()
     }
@@ -119,7 +115,6 @@ final class EpisodeCell: UICollectionViewCell {
             heartButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5),
             heartButton.widthAnchor.constraint(equalToConstant: 50),
             heartButton.heightAnchor.constraint(equalToConstant: 50),
-        
         ])
         
     }
@@ -127,7 +122,7 @@ final class EpisodeCell: UICollectionViewCell {
     private func setupCellAppearance() {
         let color = createColor(red: 255, green: 255, blue: 255)
         layer.backgroundColor = color.cgColor
-        layer.borderWidth = 1.0 // Толщина границы
+        layer.borderWidth = 1.0
         layer.borderColor = UIColor.gray.cgColor
         layer.cornerRadius = 15
         layer.masksToBounds = true

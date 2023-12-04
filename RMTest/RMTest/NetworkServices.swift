@@ -38,30 +38,8 @@ final class NetworkServices {
                     } else {
                         element.characters = []
                     }
-//                    loadCharacterData(for: element.characters[0]) { [weak self] result in
-//                                        switch result {
-//                                        case .success(let characterDetails):
-//                                            DispatchQueue.main.async {
-////                                                element.characterDetail = characterDetails
-//                                            }
-//                                            
-//                                        case .failure(let error):
-//                                            print("Error loading data: \(error.localizedDescription)")
-//                                        }
-//                                    }
                     results.episodes[index] = element
                 }
-
-//                loadCharacterData(for: results.episodes.characters[0]) { [weak self] result in
-//                    switch result {
-//                    case .success(let characterDetails):
-//                        DispatchQueue.main.async {
-//                            self?.updateUI(with: characterDetails)
-//                        }
-//                    case .failure(let error):
-//                        print("Error loading data: \(error.localizedDescription)")
-//                    }
-//                }
                 completion(results.episodes)
             } catch {
                 print("Error decoding data: \(error.localizedDescription)")

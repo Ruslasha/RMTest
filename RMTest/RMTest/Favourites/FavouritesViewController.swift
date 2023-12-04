@@ -10,15 +10,12 @@ import UIKit
 class FavouritesViewController: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return episodes.count
         return cellCount
-
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cellDef = collectionView.dequeueReusableCell(withReuseIdentifier: "EpisodeCell", for: indexPath) as! EpisodeCell
-//        guard let cell = selectedCell else { return cellDef }
         let cell = favouritesEpisodes[indexPath.row]
         return cell
     }
@@ -33,14 +30,10 @@ class FavouritesViewController: UIViewController, UICollectionViewDelegateFlowLa
             detailViewController.navigationItem.leftBarButtonItem = backButton
         let image = UIImage(named: "logoBlack")
         
-
-        // Создайте UIBarButtonItem с вашей картинкой
         let imageButton = UIBarButtonItem(image: image, style: .plain, target: self, action: .none)
         imageButton.tintColor = .black
-        // Установите кнопку на navigationItem в качестве правой кнопки
         detailViewController.navigationItem.rightBarButtonItem = imageButton
 
- 
             navController.modalPresentationStyle = .fullScreen
             present(navController, animated: false, completion: nil)
 
@@ -109,9 +102,6 @@ class FavouritesViewController: UIViewController, UICollectionViewDelegateFlowLa
         collectionView.reloadData()
     }
 
-
-
-    
     @objc func searchFieldTextChanged(_ textField: UITextField) {
         if let searchText = textField.text {
             filterEpisodes(with: searchText, selectedField: selectedField)
@@ -134,13 +124,11 @@ class FavouritesViewController: UIViewController, UICollectionViewDelegateFlowLa
         present(alertController, animated: true, completion: nil)
     }
 
-
     var selectedCell: UICollectionViewCell?
     var cellCount = 0
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // Добавляем выбранную ячейку во второй UICollectionView
         if let selectedCell = selectedCell {
             favouritesEpisodes.append(selectedCell)
             cellCount = cellCount + 1
@@ -150,7 +138,6 @@ class FavouritesViewController: UIViewController, UICollectionViewDelegateFlowLa
         collectionView.reloadData()
 
     }
-   
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -164,7 +151,6 @@ class FavouritesViewController: UIViewController, UICollectionViewDelegateFlowLa
         layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         layout.itemSize = CGSize(width: view.bounds.width - 20, height: 200) //
         
-//        cellCount = 0
         view.backgroundColor = .white
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -181,16 +167,6 @@ class FavouritesViewController: UIViewController, UICollectionViewDelegateFlowLa
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
 
                 ])
-        
-        
-//        NetworkServices.shared.getEpisodes { episodes in
-//                    self.episodes = episodes
-//                    DispatchQueue.main.async {
-//                        self.searchFieldTextChanged(self.searchSeriesField)
-//                    }
-//                }
-//        filterEpisodes(with: "", selectedField: nil)
-
     }
     
     private func createColor(red: CGFloat, green: CGFloat, blue: CGFloat) -> UIColor {
