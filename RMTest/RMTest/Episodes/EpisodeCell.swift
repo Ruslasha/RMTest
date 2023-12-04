@@ -87,7 +87,6 @@ final class EpisodeCell: UICollectionViewCell {
         contentView.addSubview(characterImageView)
         contentView.addSubview(nameCharacterLabel)
         contentView.addSubview(heartButton)
-        
     }
     
     private func setupConstraint() {

@@ -9,17 +9,23 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    private let imageView: UIImageView = {
+        let image = UIImageView(image: UIImage(named: "LoadingComponent"))
+        image.translatesAutoresizingMaskIntoConstraints = false
+        image.contentMode = .scaleAspectFit
+        return image
+    }()
+    
+    private let logoView: UIImageView = {
+        let logo = UIImageView(image: UIImage(named: "logo"))
+        logo.translatesAutoresizingMaskIntoConstraints = false
+        logo.contentMode = .scaleAspectFit
+        return logo
+    }()
+    
+    private func prepareImages() {
         
-        let imageView = UIImageView(image: UIImage(named: "LoadingComponent"))
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFit
         view.addSubview(imageView)
-        
-        let logoView = UIImageView(image: UIImage(named: "logo"))
-        logoView.translatesAutoresizingMaskIntoConstraints = false
-        logoView.contentMode = .scaleAspectFit
         view.addSubview(logoView)
         
         NSLayoutConstraint.activate([
@@ -33,13 +39,18 @@ class ViewController: UIViewController {
             logoView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
         ])
         
+    }
+    
+    private func prepareAnimationsImages() {
         let rotationAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
         rotationAnimation.toValue = NSNumber(value: Double.pi * 2)
         rotationAnimation.duration = 2.0
         rotationAnimation.repeatCount = .infinity
         imageView.layer.add(rotationAnimation, forKey: "rotationAnimation")
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+    }
+    
+    private func prepareTabBar() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
             
             let tabBarViewController = UITabBarController()
             
@@ -62,6 +73,13 @@ class ViewController: UIViewController {
             self.present(tabBarViewController, animated: false)
             
         }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        prepareImages()
+        prepareAnimationsImages()
+        prepareTabBar()
     }
 }
 

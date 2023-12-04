@@ -13,11 +13,9 @@ class EpisodesViewController: UIViewController, UICollectionViewDelegateFlowLayo
         return filteredEpisodes.count
     }
     
-    
     @objc func handleSwipeGesture(_ gesture: UISwipeGestureRecognizer) {
         if gesture.state == .ended {
             guard let cell = gesture.view as? UICollectionViewCell else { return }
-            
             guard let indexPath = collectionView.indexPath(for: cell) else { return }
             
             filteredEpisodes.remove(at: indexPath.item)
@@ -29,11 +27,9 @@ class EpisodesViewController: UIViewController, UICollectionViewDelegateFlowLayo
         }
     }
     
-    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EpisodeCell", for: indexPath) as! EpisodeCell
-        cell.heartButton.addTarget(self, action: #selector(heartButtonTapped(_:)), for: .touchUpInside)
         
         let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGesture(_:)))
         swipeGesture.direction = .left
@@ -43,22 +39,6 @@ class EpisodesViewController: UIViewController, UICollectionViewDelegateFlowLayo
         cell.configure(with: episode)
         
         return cell
-    }
-    
-    var FavouritesViewController: FavouritesViewController?
-    
-    @objc func heartButtonTapped(_ sender: UIButton) {
-        guard let cell = sender.superview?.superview as? UICollectionViewCell else { return }
-        guard let indexPath = collectionView.indexPath(for: cell) else { return }
-        
-        let selectedCell = collectionView.cellForItem(at: indexPath)
-        
-        let storyboard = UIStoryboard(name: "FavouritesViewController", bundle: nil)
-        
-        guard let navigationController = self.tabBarController?.viewControllers?[1] as? FavouritesViewController else { return }
-        
-        navigationController.selectedCell = selectedCell
-        self.tabBarController?.selectedViewController = navigationController
     }
     
     private func showCharacterDetails(_ episode: Episode) {
@@ -74,7 +54,6 @@ class EpisodesViewController: UIViewController, UICollectionViewDelegateFlowLayo
         let imageButton = UIBarButtonItem(image: image, style: .plain, target: self, action: .none)
         imageButton.tintColor = .black
         detailViewController.navigationItem.rightBarButtonItem = imageButton
-        
         
         navController.modalPresentationStyle = .fullScreen
         present(navController, animated: false, completion: nil)
@@ -95,10 +74,9 @@ class EpisodesViewController: UIViewController, UICollectionViewDelegateFlowLayo
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let episodes = episodes[indexPath.item]
         showCharacterDetails(episodes)
-        
     }
     
-    let searchSeriesField: UITextField = {
+    private let searchSeriesField: UITextField = {
         let searchField = UITextField()
         searchField.translatesAutoresizingMaskIntoConstraints = false
         searchField.borderStyle = .roundedRect
@@ -106,61 +84,33 @@ class EpisodesViewController: UIViewController, UICollectionViewDelegateFlowLayo
         return searchField
     }()
     
-    let logoView: UIImageView = {
+    private let logoView: UIImageView = {
         let logoView = UIImageView(image: UIImage(named: "logo"))
         logoView.translatesAutoresizingMaskIntoConstraints = false
         logoView.contentMode = .scaleAspectFit
         return logoView
     }()
     
-    var collectionView: UICollectionView!
-    var episodes: [Episode] = []
-    var filteredEpisodes: [Episode] = []
-    var selectedField: String?
+    private var collectionView: UICollectionView!
+    private var episodes: [Episode] = []
+    private var filteredEpisodes: [Episode] = []
     
-    func filterEpisodes(with searchText: String, selectedField: String?) {
-        if let selectedField = selectedField {
-            if searchText.isEmpty {
-                filteredEpisodes = episodes
-            } else {
-                filteredEpisodes = episodes.filter { episode in
-                    switch selectedField {
-                    case "Номер серии":
-                        return episode.episode.contains(searchText)
-                    case "Имя персонажа":
-                        return episode.episode.contains(searchText)
-                    case "Локация":
-                        return episode.episode.contains(searchText)
-                    default:
-                        return false
-                    }
-                }
-            }
-            self.selectedField = selectedField
+    private func filterEpisodes(with searchText: String) {
+        if searchText.isEmpty {
+            filteredEpisodes = episodes
         } else {
-            if searchText.isEmpty {
-                filteredEpisodes = episodes
-            } else {
-                filteredEpisodes = episodes.filter { $0.episode.contains(searchText) }
-            }
-            self.selectedField = nil
+            filteredEpisodes = episodes.filter { $0.episode.contains(searchText) }
         }
-        
         collectionView.reloadData()
     }
     
-    
-    
-    
     @objc func searchFieldTextChanged(_ textField: UITextField) {
         if let searchText = textField.text {
-            filterEpisodes(with: searchText, selectedField: selectedField)
+            filterEpisodes(with: searchText)
         }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
+    private func prepareTopView() {
         view.addSubview(logoView)
         view.addSubview(searchSeriesField)
         searchSeriesField.addTarget(self, action: #selector(searchFieldTextChanged(_:)), for: .editingChanged)
@@ -177,7 +127,9 @@ class EpisodesViewController: UIViewController, UICollectionViewDelegateFlowLayo
         ])
         
         title = "Episodes"
-        let color = createColor(red: 220, green: 220, blue: 220)
+    }
+    
+    private func prepareCollectionView() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.minimumInteritemSpacing = 10
@@ -199,21 +151,24 @@ class EpisodesViewController: UIViewController, UICollectionViewDelegateFlowLayo
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            
         ])
-        
+    }
+    
+    private func loadData() {
         NetworkServices.shared.getEpisodes { episodes in
             self.episodes = episodes
             DispatchQueue.main.async {
                 self.searchFieldTextChanged(self.searchSeriesField)
             }
         }
-        filterEpisodes(with: "", selectedField: nil)
-        
     }
     
-    private func createColor(red: CGFloat, green: CGFloat, blue: CGFloat) -> UIColor {
-        return UIColor(red: red / 255.0, green: green / 255.0, blue: blue / 255.0, alpha: 1.0)
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        prepareTopView()
+        prepareCollectionView()
+        loadData()
+        filterEpisodes(with: "")
     }
 }
 

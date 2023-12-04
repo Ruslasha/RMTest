@@ -145,7 +145,9 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
                         self.chooseFromGallery()
                     }
                 } else {
-                    self.showSettingsAlert()
+                    DispatchQueue.main.async {
+                        self.showSettingsAlert()
+                    }
                 }
             }
             
@@ -155,6 +157,8 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
         case .denied, .restricted:
             showSettingsAlert()
             
+        case .limited:
+            break
         @unknown default:
             break
         }
@@ -179,7 +183,6 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
     
     private let networkServices = NetworkServices()
     
-    
     init(episode: Episode) {
         self.episode = episode
         super.init(nibName: nil, bundle: nil)
@@ -191,10 +194,13 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
         prepareView()
-        
         loadData()
+        prepareTableView()
+    }
+    
+    private func prepareTableView() {
+        
         tableView = UITableView(frame: view.bounds, style: .plain)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.delegate = self
@@ -212,14 +218,10 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
     }
     
     private func prepareView() {
-
+        
         view.backgroundColor = .white
         addSubview()
         setupConstraint()
-    }
-    
-    private func createColor(red: CGFloat, green: CGFloat, blue: CGFloat) -> UIColor {
-        return UIColor(red: red / 255.0, green: green / 255.0, blue: blue / 255.0, alpha: 1.0)
     }
     
     private func addSubview() {
@@ -234,7 +236,7 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
             switch result {
             case .success(let characterDetails):
                 DispatchQueue.main.async {
-                    self?.updateUI(with: characterDetails)
+                    self?.updateDataCharacter(with: characterDetails)
                 }
             case .failure(let error):
                 print("Error loading data: \(error.localizedDescription)")
@@ -266,21 +268,13 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
         ])
     }
     
-    @objc func linkTapped(_ sender: UIButton) {
-        guard let linkTitle = sender.title(for: .normal) else { return }
-        
-        let alert = UIAlertController(title: "Ссылка", message: "\(linkTitle) нажата", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        present(alert, animated: true, completion: nil)
-    }
-    
     private var genderCharacter = ""
     private var statusCharacter = ""
     private var specieCharacter = ""
     private var originCharacter = ""
     private var typeCharacter = ""
     private var locationCharacter = ""
-    private func updateUI(with characterDetails: Character) {
+    private func updateDataCharacter(with characterDetails: Character) {
         nameLabel.text = characterDetails.name
         genderCharacter = "\(characterDetails.gender)"
         statusCharacter = "\(characterDetails.status)"
@@ -304,7 +298,7 @@ final class CharacterDetailViewController: UIViewController, UITableViewDataSour
 }
 
 extension CharacterDetailViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    
+
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             characterImageView.image = pickedImage
