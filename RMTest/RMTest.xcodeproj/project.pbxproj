@@ -18,6 +18,7 @@
 		44488DBC2B161803007B13BB /* CharacterDetailViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44488DBB2B161803007B13BB /* CharacterDetailViewController.storyboard */; };
 		44488DBE2B161812007B13BB /* CharacterDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44488DBD2B161812007B13BB /* CharacterDetailViewController.swift */; };
 		44A4C1A82B1C8480008EFCB2 /* HeartButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A4C1A72B1C8480008EFCB2 /* HeartButton.swift */; };
+		44A60D502B1DE57F00F893C7 /* FavouritesArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A60D4F2B1DE57E00F893C7 /* FavouritesArray.swift */; };
 		44D5F5A62B14F6A500E557EB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44D5F5A52B14F6A500E557EB /* AppDelegate.swift */; };
 		44D5F5A82B14F6A500E557EB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44D5F5A72B14F6A500E557EB /* SceneDelegate.swift */; };
 		44D5F5AA2B14F6A500E557EB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44D5F5A92B14F6A500E557EB /* ViewController.swift */; };
@@ -39,6 +40,7 @@
 		44488DBB2B161803007B13BB /* CharacterDetailViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = CharacterDetailViewController.storyboard; sourceTree = "<group>"; };
 		44488DBD2B161812007B13BB /* CharacterDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterDetailViewController.swift; sourceTree = "<group>"; };
 		44A4C1A72B1C8480008EFCB2 /* HeartButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartButton.swift; sourceTree = "<group>"; };
+		44A60D4F2B1DE57E00F893C7 /* FavouritesArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouritesArray.swift; sourceTree = "<group>"; };
 		44D5F5A22B14F6A500E557EB /* RMTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RMTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		44D5F5A52B14F6A500E557EB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		44D5F5A72B14F6A500E557EB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -77,6 +79,7 @@
 			children = (
 				44488DAF2B15D6AB007B13BB /* FavouritesViewController.swift */,
 				44488DB12B15D6BC007B13BB /* FavouritesViewController.storyboard */,
+				44A60D4F2B1DE57E00F893C7 /* FavouritesArray.swift */,
 			);
 			path = Favourites;
 			sourceTree = "<group>";
@@ -219,6 +222,7 @@
 				44D5F5A62B14F6A500E557EB /* AppDelegate.swift in Sources */,
 				44488DBE2B161812007B13BB /* CharacterDetailViewController.swift in Sources */,
 				44488DA32B15CA3E007B13BB /* Character.swift in Sources */,
+				44A60D502B1DE57F00F893C7 /* FavouritesArray.swift in Sources */,
 				44D5F5B02B14F6A500E557EB /* RMTest.xcdatamodeld in Sources */,
 				44D5F5A82B14F6A500E557EB /* SceneDelegate.swift in Sources */,
 			);
