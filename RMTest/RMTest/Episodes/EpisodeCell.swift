@@ -59,7 +59,7 @@ final class EpisodeCell: UICollectionViewCell {
         return label
     }()
     
-    private let heartButton: UIButton = {
+    let heartButton: UIButton = {
         let heart = HeartButton()
         heart.translatesAutoresizingMaskIntoConstraints = false
         return heart
@@ -81,20 +81,10 @@ final class EpisodeCell: UICollectionViewCell {
     
     private func setupViews() {
         addSubview()
-//        let heartButton = HeartButton()
-//        heartButton.translatesAutoresizingMaskIntoConstraints = false
-//        contentView.addSubview(heartButton)
-//        NSLayoutConstraint.activate([
-//            heartButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5),
-//            heartButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5),
-//            heartButton.widthAnchor.constraint(equalToConstant: 50),
-//            heartButton.heightAnchor.constraint(equalToConstant: 50),
-//        ])
         setupConstraint()
     }
     
     private func addSubview() {
-//        contentView.addSubview(air_dateLabel)
         contentView.addSubview(nameEpisodeLabel)
         contentView.addSubview(monitorImageView)
         contentView.addSubview(randomCharacterLinkLabel)
@@ -115,12 +105,6 @@ final class EpisodeCell: UICollectionViewCell {
             nameCharacterLabel.topAnchor.constraint(equalTo: characterImageView.bottomAnchor, constant: 8),
             nameCharacterLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
             nameCharacterLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-         
-//            air_dateLabel.topAnchor.constraint(equalTo: nameCharacterLabel.bottomAnchor, constant: 4),
-//            air_dateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5),
-//            air_dateLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            
-//            characterImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             
             monitorImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
             monitorImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
@@ -143,6 +127,8 @@ final class EpisodeCell: UICollectionViewCell {
     private func setupCellAppearance() {
         let color = createColor(red: 255, green: 255, blue: 255)
         layer.backgroundColor = color.cgColor
+        layer.borderWidth = 1.0 // Толщина границы
+        layer.borderColor = UIColor.gray.cgColor
         layer.cornerRadius = 15
         layer.masksToBounds = true
     }

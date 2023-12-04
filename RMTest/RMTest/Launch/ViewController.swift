@@ -48,7 +48,9 @@ class ViewController: UIViewController {
             let favouritesViewController = FavouritesViewController()
             
             tabBarViewController.setViewControllers([episodesViewController, favouritesViewController], animated: false)
-            
+            tabBarViewController.tabBar.isTranslucent = false
+            tabBarViewController.tabBar.backgroundColor = .white
+//            tabBarViewController.tabBar.barTintColor = UIColor.white
             guard let items = tabBarViewController.tabBar.items else {
                 return
             }
@@ -59,7 +61,7 @@ class ViewController: UIViewController {
             items[1].image = UIImage(systemName: images[1])
             
             tabBarViewController.modalPresentationStyle = .fullScreen
-            
+//            tabBarViewController.tabBar.barTintColor = UIColor.white
             self.present(tabBarViewController, animated: false)
             
                 }

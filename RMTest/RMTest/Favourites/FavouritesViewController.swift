@@ -11,46 +11,15 @@ class FavouritesViewController: UIViewController, UICollectionViewDelegateFlowLa
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 //        return episodes.count
-        return filteredEpisodes.count
+        return cellCount
 
     }
-    
-    
-    @objc func handleSwipeGesture(_ gesture: UISwipeGestureRecognizer) {
-        if gesture.state == .ended {
-            // Получаем ячейку, на которую был сделан свайп
-            guard let cell = gesture.view as? UICollectionViewCell else { return }
-            
-            // Получаем индекс ячейки
-            guard let indexPath = collectionView.indexPath(for: cell) else { return }
-            
-            // Удаляем ячейку из источника данных
-            filteredEpisodes.remove(at: indexPath.item)
-            
-            // Удаляем ячейку из коллекции
-//            collectionView.deleteItems(at: [indexPath])
-            
-            collectionView.performBatchUpdates({
-                collectionView.deleteItems(at: [indexPath])
-            }, completion: nil)
-
-        }
-    }
-
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EpisodeCell", for: indexPath) as! EpisodeCell
-        
-        // Добавляем жест свайпа влево
-            let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGesture(_:)))
-            swipeGesture.direction = .left
-            cell.addGestureRecognizer(swipeGesture)
-
-//        let episode = episodes[indexPath.item]
-        let episode = filteredEpisodes[indexPath.row]
-        cell.configure(with: episode)
-        
+        let cellDef = collectionView.dequeueReusableCell(withReuseIdentifier: "EpisodeCell", for: indexPath) as! EpisodeCell
+//        guard let cell = selectedCell else { return cellDef }
+        let cell = favouritesEpisodes[indexPath.row]
         return cell
     }
     
@@ -104,6 +73,7 @@ class FavouritesViewController: UIViewController, UICollectionViewDelegateFlowLa
             
     var collectionView: UICollectionView!
     var episodes: [Episode] = []
+    var favouritesEpisodes: [UICollectionViewCell] = []
     var filteredEpisodes: [Episode] = []
     var selectedField: String?
     let searchFields = ["Номер серии", "Имя персонажа", "Локация"]
@@ -165,37 +135,25 @@ class FavouritesViewController: UIViewController, UICollectionViewDelegateFlowLa
     }
 
 
-    
+    var selectedCell: UICollectionViewCell?
+    var cellCount = 0
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Добавляем выбранную ячейку во второй UICollectionView
+        if let selectedCell = selectedCell {
+            favouritesEpisodes.append(selectedCell)
+            cellCount = cellCount + 1
+            collectionView.reloadData()
+        }
+        selectedCell = nil
+        collectionView.reloadData()
+
+    }
+   
+
     override func viewDidLoad() {
         super.viewDidLoad()
-
-//        view.addSubview(searchSeriesField)
-//        searchSeriesField.addTarget(self, action: #selector(searchFieldTextChanged(_:)), for: .editingChanged)
-//
-//        NSLayoutConstraint.activate([
-//            searchSeriesField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-//            searchSeriesField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-//            searchSeriesField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-//            searchSeriesField.heightAnchor.constraint(equalToConstant: 50)
-//                ])
-        
-//        let segmentedControl = UISegmentedControl(items: searchFields)
-//        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
-//        segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged(_:)), for: .valueChanged)
-//        view.addSubview(segmentedControl)
-        
-//        let filterButton = UIButton()
-//        filterButton.setTitle("Выбрать поле", for: .normal)
-//        filterButton.translatesAutoresizingMaskIntoConstraints = false
-//        filterButton.addTarget(self, action: #selector(openBottomSheet), for: .touchUpInside)
-//        view.addSubview(filterButton)
-//
-//        NSLayoutConstraint.activate([
-//            filterButton.topAnchor.constraint(equalTo: searchSeriesField.bottomAnchor, constant: 20),
-//            filterButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-//            filterButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-//
-//                ])
         
         title = "Favourites"
         let color = createColor(red: 220, green: 220, blue: 220)
@@ -206,13 +164,14 @@ class FavouritesViewController: UIViewController, UICollectionViewDelegateFlowLa
         layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         layout.itemSize = CGSize(width: view.bounds.width - 20, height: 200) //
         
-        view.backgroundColor = color
+//        cellCount = 0
+        view.backgroundColor = .white
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(EpisodeCell.self, forCellWithReuseIdentifier: "EpisodeCell")
-        collectionView.backgroundColor = color
+        collectionView.backgroundColor = .white
         view.addSubview(collectionView)
         
         NSLayoutConstraint.activate([
@@ -224,13 +183,13 @@ class FavouritesViewController: UIViewController, UICollectionViewDelegateFlowLa
                 ])
         
         
-        NetworkServices.shared.getEpisodes { episodes in
-                    self.episodes = episodes
-                    DispatchQueue.main.async {
-                        self.searchFieldTextChanged(self.searchSeriesField)
-                    }
-                }
-        filterEpisodes(with: "", selectedField: nil)
+//        NetworkServices.shared.getEpisodes { episodes in
+//                    self.episodes = episodes
+//                    DispatchQueue.main.async {
+//                        self.searchFieldTextChanged(self.searchSeriesField)
+//                    }
+//                }
+//        filterEpisodes(with: "", selectedField: nil)
 
     }
     
