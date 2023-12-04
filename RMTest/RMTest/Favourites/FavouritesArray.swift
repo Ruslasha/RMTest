@@ -10,9 +10,7 @@ import Foundation
 class FavouritesArray {
     static let shared = FavouritesArray()
 
-    var favouritesArray: [EpisodeCell] = []
     var favouritesEpisodeArray: [Episode] = []
-
     private init() {
         
     }
@@ -21,11 +19,4 @@ class FavouritesArray {
         favouritesEpisodeArray.append(element)
     }
 
-    func append(element: EpisodeCell) {
-        favouritesArray.append(element)
-    }
-
-    func getArray() -> [EpisodeCell] {
-        return favouritesArray
-    }
 }

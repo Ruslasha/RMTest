@@ -39,12 +39,9 @@ class EpisodesViewController: UIViewController, UICollectionViewDelegateFlowLayo
         cell.configure(with: episode)
         cell.heartButton.tag = indexPath.row
         cell.heartButton.addTarget(self, action: #selector(addEpisode(_:)), for: .touchUpInside)
-//        cell.heartButton.addTarget(self, action: { _ in addEpisode(indexPath.row)}, for: .touchUpInside)
-
         return cell
     }
     
-        var favouritesArray = FavouritesArray.shared.favouritesArray
         var favouritesEpisodeArray = FavouritesArray.shared.favouritesEpisodeArray
 
     @objc private func addEpisode(_ sender: UIButton) {

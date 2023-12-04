@@ -114,6 +114,7 @@ final class EpisodeCell: UICollectionViewCell {
             heartButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5),
             heartButton.widthAnchor.constraint(equalToConstant: 50),
             heartButton.heightAnchor.constraint(equalToConstant: 50),
+            
         ])
         
     }

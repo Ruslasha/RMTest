@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FavouritesViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+class FavouritesViewController: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return FavouritesArray.shared.favouritesEpisodeArray.count
     }
@@ -17,15 +17,21 @@ class FavouritesViewController: UIViewController, UICollectionViewDelegate, UICo
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EpisodeCell", for: indexPath) as! EpisodeCell
         let episode = FavouritesArray.shared.favouritesEpisodeArray[indexPath.row]
         cell.configure(with: episode)
+        cell.heartButton.isHidden = true
         return cell
         
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = collectionView.bounds.width - 20
+        let height: CGFloat = 400
+        
+        return CGSize(width: width, height: height)
     }
     
 
     private var collectionView: UICollectionView!
 
-//    private var favouritesArray = FavouritesArray.shared.favouritesArray
-//    var favouritesArray = FavouritesArray.shared.favouritesArray
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         collectionView.reloadData()

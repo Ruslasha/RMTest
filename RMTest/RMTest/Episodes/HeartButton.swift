@@ -24,7 +24,6 @@ class HeartButton: UIButton {
         setImage(scaledHeartImage, for: .normal)
         setImage(filledScaledHeartImage, for: .highlighted)
         addTarget(self, action: #selector(animateButton), for: .touchUpInside)
-        addTarget(self, action: #selector(addCell(Cell:)), for: .touchUpInside)
     }
     
     private func resizeImage(_ image: UIImage?, targetSize: CGSize) -> UIImage? {
@@ -38,14 +37,6 @@ class HeartButton: UIButton {
         }
         
         return scaledImage
-    }
-    
-    var favouritesArray = FavouritesArray.shared.getArray()
-    
-    @objc private func addCell(Cell: EpisodeCell) {
-        
-        favouritesArray.append(Cell)
-        
     }
         
     @objc private func animateButton() {
